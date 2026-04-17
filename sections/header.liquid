@@ -1,0 +1,100 @@
+<header class="site-header" id="site-header">
+  <div class="container">
+    <div class="header__inner">
+
+      <!-- Navigation gauche -->
+      <nav class="header__nav" aria-label="Navigation principale">
+        {% assign left_links = linklists[section.settings.nav_left] %}
+        {% if left_links %}
+          {% for link in left_links.links %}
+            <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="/collections/all">BOUTIQUE</a>
+          <a href="/collections/nouveautes">NOUVEAUTÉS</a>
+          <a href="/pages/notre-histoire">HISTOIRE</a>
+        {% endif %}
+      </nav>
+
+      <!-- Logo centré -->
+      <a href="/" class="header__logo" aria-label="{{ shop.name }}">
+        {{ section.settings.logo_text | default: shop.name | upcase }}
+      </a>
+
+      <!-- Actions droite -->
+      <div class="header__actions">
+        <!-- Recherche -->
+        <button class="header__icon" id="search-toggle" aria-label="Rechercher">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="7.5" cy="7.5" r="6"/>
+            <line x1="12" y1="12" x2="17" y2="17"/>
+          </svg>
+        </button>
+        <!-- Compte -->
+        <a href="/account" class="header__icon" aria-label="Mon compte">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="9" cy="5.5" r="3.5"/>
+            <path d="M1 17c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
+          </svg>
+        </a>
+        <!-- Panier -->
+        <button class="header__icon" id="cart-toggle" aria-label="Panier ({{ cart.item_count }} articles)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M1 1h2.5l2 8.5h9L17 4H5"/>
+            <circle cx="8" cy="15.5" r="1.5" fill="currentColor" stroke="none"/>
+            <circle cx="13.5" cy="15.5" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="cart-badge {% if cart.item_count > 0 %}show{% endif %}" id="cart-badge">{{ cart.item_count }}</span>
+        </button>
+        <!-- Burger mobile -->
+        <button class="header__burger header__icon" id="burger" aria-label="Menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <button class="mobile-nav__close header__icon" id="mobile-nav-close" aria-label="Fermer">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <line x1="2" y1="2" x2="18" y2="18" stroke="currentColor" stroke-width="1"/>
+      <line x1="18" y1="2" x2="2" y2="18" stroke="currentColor" stroke-width="1"/>
+    </svg>
+  </button>
+  {% assign left_links = linklists[section.settings.nav_left] %}
+  {% if left_links %}
+    {% for link in left_links.links %}
+      <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+    {% endfor %}
+  {% else %}
+    <a href="/collections/all">BOUTIQUE</a>
+    <a href="/collections/nouveautes">NOUVEAUTÉS</a>
+    <a href="/pages/notre-histoire">HISTOIRE</a>
+  {% endif %}
+  <a href="/account">MON COMPTE</a>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Nom de la marque (logo texte)",
+      "default": "CLAIRZAL"
+    },
+    {
+      "type": "link_list",
+      "id": "nav_left",
+      "label": "Menu principal",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

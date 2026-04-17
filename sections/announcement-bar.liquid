@@ -1,0 +1,25 @@
+{% if section.settings.show %}
+<div class="announcement-bar">
+  {{ section.settings.text }}
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show",
+      "label": "Afficher la barre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Texte",
+      "default": "LIVRAISON OFFERTE EN FRANCE — SÉRIE LIMITÉE"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,82 @@
+<section class="story">
+
+  <!-- Visuel gauche -->
+  <div class="story__media">
+    {% if section.settings.image != blank %}
+      <img
+        src="{{ section.settings.image | img_url: '900x' }}"
+        srcset="{{ section.settings.image | img_url: '600x' }} 600w,
+                {{ section.settings.image | img_url: '900x' }} 900w"
+        sizes="50vw"
+        alt="{{ section.settings.image.alt | escape }}"
+        loading="lazy"
+      >
+    {% endif %}
+  </div>
+
+  <!-- Contenu droite -->
+  <div class="story__content">
+    <div class="fade-up">
+      {% if section.settings.eyebrow != blank %}
+        <span class="eyebrow eyebrow--light">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="story__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <p class="story__text">{{ section.settings.text }}</p>
+      {% endif %}
+      {% if section.settings.link_url != blank %}
+        <a href="{{ section.settings.link_url }}" class="story__link">
+          {{ section.settings.link_label | default: "DÉCOUVRIR L'HISTOIRE" }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Notre Histoire",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Visuel (colonne gauche)"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte d'accroche",
+      "default": "NOTRE HISTOIRE"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Titre",
+      "default": "NÉES POUR ÊTRE PORTÉES"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte (italic)",
+      "default": "Clairzal est née d'une obsession : créer des lunettes qui disparaissent au visage pour ne laisser voir que vous. Des matières nobles, des silhouettes épurées, une écriture intemporelle."
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Lien"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Texte du lien",
+      "default": "DÉCOUVRIR L'HISTOIRE"
+    }
+  ],
+  "presets": [
+    { "name": "Notre Histoire", "category": "Image" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,191 @@
+{% assign product = product %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div class="product-layout" id="product-{{ product.id }}">
+
+  <!-- Galerie gauche -->
+  <div class="product-gallery">
+    <div class="product-gallery__main">
+      <img
+        id="main-product-img"
+        src="{{ product.featured_image | img_url: '900x' }}"
+        srcset="{{ product.featured_image | img_url: '600x' }} 600w,
+                {{ product.featured_image | img_url: '900x' }} 900w"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="eager"
+      >
+    </div>
+    {% if product.images.size > 1 %}
+      <div class="product-gallery__thumbs">
+        {% for image in product.images limit: 5 %}
+          <div
+            class="product-gallery__thumb {% if forloop.first %}active{% endif %}"
+            data-src="{{ image | img_url: '900x' }}"
+            role="button"
+            tabindex="0"
+            aria-label="Vue {{ forloop.index }}"
+          >
+            <img src="{{ image | img_url: '200x' }}" alt="{{ image.alt | escape }}">
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Infos droite -->
+  <div class="product-info">
+    <div class="product-info__num">N°{{ product.id | modulo: 100 | prepend: '0' | slice: -2, 2 }}</div>
+    <h1 class="product-info__title">{{ product.title | upcase }}</h1>
+
+    <div class="product-info__price" id="product-price">
+      {% if current_variant.compare_at_price > current_variant.price %}
+        <span class="product-info__price-compare">{{ current_variant.compare_at_price | money }}</span>
+      {% endif %}
+      {{ current_variant.price | money }}
+    </div>
+
+    {% if product.description != blank %}
+      <p class="product-info__desc">{{ product.description | strip_html | truncate: 200 }}</p>
+    {% endif %}
+
+    <hr class="product-info__divider">
+
+    {% form 'product', product, id: 'product-form' %}
+      <input type="hidden" name="id" id="variant-id" value="{{ current_variant.id }}">
+
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <div style="margin-bottom:1.25rem;">
+            <span class="product-info__label">{{ option.name | upcase }}</span>
+            {% if option.name == 'Couleur' or option.name == 'Color' %}
+              <div class="variant-swatches" data-option="{{ forloop.index0 }}">
+                {% for value in option.values %}
+                  <button
+                    type="button"
+                    class="swatch {% if forloop.first %}active{% endif %}"
+                    data-value="{{ value }}"
+                    title="{{ value }}"
+                    style="background-color:{{ value | downcase | replace: ' ', '' }};"
+                    aria-label="{{ value }}"
+                  ></button>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="variant-buttons" data-option="{{ forloop.index0 }}">
+                {% for value in option.values %}
+                  <button type="button" class="variant-btn {% if forloop.first %}active{% endif %}" data-value="{{ value }}">
+                    {{ value }}
+                  </button>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endunless %}
+
+      <hr class="product-info__divider">
+
+      <div class="product-info__actions">
+        <button
+          type="submit"
+          class="btn btn--primary btn--full"
+          id="add-to-cart-btn"
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          {% if current_variant.available %}
+            AJOUTER AU PANIER
+          {% else %}
+            ÉPUISÉ
+          {% endif %}
+        </button>
+        {% if section.settings.show_buy_now %}
+          <a href="/checkout?variant={{ current_variant.id }}" class="btn btn--ghost btn--full" id="buy-now-btn">
+            ACHETER MAINTENANT
+          </a>
+        {% endif %}
+      </div>
+    {% endform %}
+
+    <!-- Accordion -->
+    <div class="accordion">
+      {% if product.description != blank %}
+        <div class="accordion__item">
+          <button class="accordion__trigger" type="button">
+            DESCRIPTION
+            <span class="accordion__icon" aria-hidden="true"></span>
+          </button>
+          <div class="accordion__body">
+            <div class="accordion__content">{{ product.description }}</div>
+          </div>
+        </div>
+      {% endif %}
+      <div class="accordion__item">
+        <button class="accordion__trigger" type="button">
+          CARACTÉRISTIQUES
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__body">
+          <div class="accordion__content">
+            {{ section.settings.characteristics | default: 'Monture acétate · Verres UV400 catégorie 3 · Fabriqué en Italie · Étui rigide inclus · Chiffon microfibre inclus' }}
+          </div>
+        </div>
+      </div>
+      <div class="accordion__item">
+        <button class="accordion__trigger" type="button">
+          LIVRAISON & RETOURS
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__body">
+          <div class="accordion__content">
+            {{ section.settings.delivery | default: 'Livraison offerte en France métropolitaine. Expédition sous 24–48h (jours ouvrés). Retours gratuits sous 30 jours.' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avis Loox -->
+    {% if section.settings.show_reviews %}
+      <div style="margin-top:2rem;">
+        {{ 'loox-widget' | loox_widget }}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<!-- Variants JSON for JS -->
+<script type="application/json" id="product-variants-json">
+  {{ product.variants | json }}
+</script>
+
+{% schema %}
+{
+  "name": "Product Main",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Afficher 'ACHETER MAINTENANT'",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Afficher avis Loox",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "characteristics",
+      "label": "Caractéristiques (défaut)",
+      "default": "Monture acétate · Verres UV400 catégorie 3 · Fabriqué en Italie · Étui rigide inclus · Chiffon microfibre inclus"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery",
+      "label": "Livraison & retours (texte)",
+      "default": "Livraison offerte en France métropolitaine. Expédition sous 24–48h. Retours gratuits 30 jours."
+    }
+  ]
+}
+{% endschema %}

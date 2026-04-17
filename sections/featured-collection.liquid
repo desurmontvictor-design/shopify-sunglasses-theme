@@ -1,0 +1,104 @@
+{% assign col = collections[section.settings.collection] %}
+
+<section class="featured-collection">
+  <div class="container">
+    <div class="section-head fade-up">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        <h2>{{ section.settings.title | default: 'LA COLLECTION' }}</h2>
+      </div>
+      {% if col != blank %}
+        <a href="{{ col.url }}" class="section-head__link">VOIR TOUT</a>
+      {% endif %}
+    </div>
+
+    <div class="editorial-grid">
+      {% if col != blank %}
+        {% for product in col.products limit: 4 %}
+          {% assign is_featured = forloop.first %}
+          {% assign num = forloop.index | prepend: 'N°0' %}
+          {% assign badge = '' %}
+          {% if product.tags contains 'bestseller' or product.tags contains 'best-seller' %}
+            {% assign badge = 'BESTSELLER' %}
+          {% elsif product.tags contains 'new' or product.tags contains 'nouveau' %}
+            {% assign badge = 'NOUVEAU' %}
+          {% endif %}
+          <a href="{{ product.url }}" class="product-card {% if is_featured %}product-card--featured{% endif %}">
+            <div class="product-card__media">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | img_url: '600x800' }}"
+                  srcset="{{ product.featured_image | img_url: '400x533' }} 400w,
+                          {{ product.featured_image | img_url: '600x800' }} 600w"
+                  sizes="(max-width:768px) 50vw, 25vw"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  loading="lazy"
+                >
+              {% endif %}
+              <span class="product-card__num">{{ num }}</span>
+              {% if badge != '' %}
+                <span class="product-card__badge {% if badge == 'NOUVEAU' %}product-card__badge--new{% endif %}">{{ badge }}</span>
+              {% endif %}
+            </div>
+            <div class="product-card__info">
+              <div class="product-card__name">{{ product.title | upcase }}</div>
+              {% if product.description != blank %}
+                <div class="product-card__desc">{{ product.description | strip_html | truncate: 80 }}</div>
+              {% endif %}
+              <div class="product-card__price">
+                {% if product.compare_at_price > product.price %}
+                  <span class="product-card__price-compare">{{ product.compare_at_price | money }}</span>
+                {% endif %}
+                {{ product.price | money }}
+              </div>
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..4) %}
+          <div class="product-card">
+            <div class="product-card__media" style="background:var(--color-secondary);display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:var(--font-body);font-style:italic;font-size:0.8rem;color:var(--color-text-muted);">Photo produit</span>
+            </div>
+            <div class="product-card__info">
+              <div class="product-card__num">N°0{{ i }}</div>
+              <div class="product-card__name">NOM DU MODÈLE</div>
+              <div class="product-card__desc">Description courte du modèle.</div>
+              <div class="product-card__price">199,00 €</div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection mise en avant"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte d'accroche",
+      "default": "Nos créations"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de section",
+      "default": "LA COLLECTION"
+    }
+  ],
+  "presets": [
+    { "name": "Featured Collection", "category": "Collection" }
+  ]
+}
+{% endschema %}

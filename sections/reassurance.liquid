@@ -1,0 +1,50 @@
+<div class="reassurance">
+  {% for block in section.blocks %}
+    <div class="reassurance__item" {{ block.shopify_attributes }}>
+      {% if block.settings.title != blank %}
+        <div class="reassurance__title">{{ block.settings.title | upcase }}</div>
+      {% endif %}
+      {% if block.settings.text != blank %}
+        <div class="reassurance__text">{{ block.settings.text }}</div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Réassurance",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Élément",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "LIVRAISON OFFERTE"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description",
+          "default": "En France métropolitaine, sans minimum d'achat."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Réassurance",
+      "category": "Text",
+      "blocks": [
+        { "type": "item", "settings": { "title": "LIVRAISON OFFERTE", "text": "En France métropolitaine, sans minimum d'achat." } },
+        { "type": "item", "settings": { "title": "SÉRIE LIMITÉE", "text": "Chaque modèle est édité en quantités restreintes." } },
+        { "type": "item", "settings": { "title": "RETOURS 30 JOURS", "text": "Pas convaincu·e ? On reprend, sans question." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

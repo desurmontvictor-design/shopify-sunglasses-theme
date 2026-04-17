@@ -1,0 +1,10 @@
+{
+  "current": {
+    "color_primary": "#001532",
+    "color_bg": "#f5f3ee",
+    "color_secondary": "#eceae4",
+    "enable_cart_drawer": true,
+    "currency": "EUR"
+  },
+  "presets": {}
+}

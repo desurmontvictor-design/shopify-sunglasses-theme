@@ -1,0 +1,57 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagué \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "password_page": {
+      "login_form_heading": "Accès privé",
+      "login_form_password_label": "Mot de passe",
+      "login_form_password_placeholder": "Votre mot de passe",
+      "login_form_submit": "Entrer",
+      "signup_form_email_label": "Email",
+      "signup_form_success": "Merci ! Nous vous tiendrons informé·e de l'ouverture."
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Votre sélection",
+      "empty": "Votre panier est vide.",
+      "checkout": "Commander",
+      "subtotal": "Sous-total",
+      "shipping": "Livraison offerte",
+      "continue_browsing": "Continuer mes achats"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "AJOUTER AU PANIER",
+      "sold_out": "ÉPUISÉ",
+      "unavailable": "INDISPONIBLE",
+      "quantity": "Quantité",
+      "description": "Description",
+      "vendor": "Marque"
+    },
+    "general": {
+      "sale_badge": "PROMO",
+      "new_badge": "NOUVEAU"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "Aucun produit correspondant à votre sélection.",
+      "items_with_count": {
+        "one": "{{ count }} modèle",
+        "other": "{{ count }} modèles"
+      }
+    }
+  },
+  "customer": {
+    "log_in": "Se connecter",
+    "log_out": "Se déconnecter",
+    "register": "Créer un compte",
+    "account": "Mon compte",
+    "orders": "Mes commandes",
+    "order": "Commande"
+  }
+}

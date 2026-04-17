@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "PRINTEMPS — ÉTÉ 2026",
+        "title": "L'ÉLÉGANCE A TROUVÉ SON REGARD",
+        "subtitle": "Des lunettes de soleil conçues pour celles et ceux qui portent leur caractère avec discrétion.",
+        "cta_label": "DÉCOUVRIR LA COLLECTION",
+        "cta_url": "/collections/all"
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "settings": {
+        "text": "NOUVELLE COLLECTION — LIVRAISON OFFERTE — SÉRIE LIMITÉE — CLAIRZAL.COM — L'ÉLÉGANCE A TROUVÉ SON REGARD"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Nos créations",
+        "title": "LA COLLECTION"
+      }
+    },
+    "statement": {
+      "type": "statement",
+      "settings": {
+        "title": "L'ÉLÉGANCE A TROUVÉ SON REGARD",
+        "subtitle": "Chaque paire raconte une histoire. La vôtre commence ici.",
+        "watermark": "CLAIRZAL"
+      }
+    },
+    "story": {
+      "type": "story",
+      "settings": {
+        "eyebrow": "NOTRE HISTOIRE",
+        "title": "NÉES POUR ÊTRE PORTÉES",
+        "text": "Clairzal est née d'une obsession : créer des lunettes qui disparaissent au visage pour ne laisser voir que vous. Des matières nobles, des silhouettes épurées, une écriture intemporelle.",
+        "link_label": "DÉCOUVRIR L'HISTOIRE",
+        "link_url": "/pages/notre-histoire"
+      }
+    },
+    "reassurance": {
+      "type": "reassurance",
+      "blocks": {
+        "b1": {
+          "type": "item",
+          "settings": {
+            "title": "LIVRAISON OFFERTE",
+            "text": "En France métropolitaine, sans minimum d'achat."
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "title": "SÉRIE LIMITÉE",
+            "text": "Chaque modèle est édité en quantités restreintes."
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "title": "RETOURS 30 JOURS",
+            "text": "Pas convaincu·e ? On reprend, sans question."
+          }
+        }
+      },
+      "block_order": ["b1", "b2", "b3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Le cercle Clairzal",
+        "title": "ACCÈS PRIVÉ",
+        "subtitle": "Nouvelles collections, séries limitées, avant-premières. Réservé à nos abonnés.",
+        "btn_label": "S'INSCRIRE"
+      }
+    }
+  },
+  "order": ["hero", "marquee", "featured_collection", "statement", "story", "reassurance", "newsletter"]
+}

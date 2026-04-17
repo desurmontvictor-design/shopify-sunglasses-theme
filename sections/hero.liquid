@@ -1,0 +1,89 @@
+<section class="hero" id="hero-{{ section.id }}">
+
+  <!-- Colonne gauche : texte -->
+  <div class="hero__col hero__col--left">
+    {% if section.settings.eyebrow != blank %}
+      <span class="hero__eyebrow">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+    {% if section.settings.title != blank %}
+      <h1 class="hero__title">{{ section.settings.title }}</h1>
+    {% endif %}
+    {% if section.settings.subtitle != blank %}
+      <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+    {% if section.settings.cta_url != blank %}
+      <div>
+        <a href="{{ section.settings.cta_url }}" class="btn btn--white">
+          {{ section.settings.cta_label | default: 'DÉCOUVRIR LA COLLECTION' }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Colonne droite : image cercle -->
+  <div class="hero__col hero__col--right">
+    {% if section.settings.image != blank %}
+      <div class="hero__circle">
+        <img
+          src="{{ section.settings.image | img_url: '700x' }}"
+          srcset="{{ section.settings.image | img_url: '500x' }} 500w,
+                  {{ section.settings.image | img_url: '700x' }} 700w"
+          sizes="(max-width: 768px) 80vw, 40vw"
+          alt="{{ section.settings.image.alt | default: shop.name | escape }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </div>
+    {% else %}
+      <div class="hero__placeholder">
+        Photo produit
+      </div>
+    {% endif %}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte d'accroche",
+      "default": "PRINTEMPS — ÉTÉ 2026"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Titre principal",
+      "default": "L'ÉLÉGANCE A TROUVÉ SON REGARD"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre (italic)",
+      "default": "Des lunettes de soleil conçues pour celles et ceux qui portent leur caractère avec discrétion."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image produit (cercle)"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton",
+      "default": "DÉCOUVRIR LA COLLECTION"
+    }
+  ],
+  "presets": [
+    { "name": "Hero", "category": "Image" }
+  ]
+}
+{% endschema %}

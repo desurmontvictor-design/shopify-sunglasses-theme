@@ -1,0 +1,96 @@
+<div class="cart-page">
+  <div class="container">
+    <h1 class="cart-page__title">VOTRE SÉLECTION</h1>
+
+    {% if cart.item_count > 0 %}
+      <form action="/cart" method="post" id="cart-form">
+        <div class="cart-layout">
+
+          <!-- Items -->
+          <div>
+            {% for item in cart.items %}
+              <div class="cart-item" id="cart-item-{{ item.key }}">
+                <a href="{{ item.url }}">
+                  <img
+                    class="cart-item__img"
+                    src="{{ item.image | img_url: '200x' }}"
+                    alt="{{ item.title | escape }}"
+                  >
+                </a>
+                <div>
+                  <div class="cart-item__name">{{ item.product.title | upcase }}</div>
+                  {% unless item.variant.title == 'Default Title' %}
+                    <div class="cart-item__variant">{{ item.variant.title }}</div>
+                  {% endunless %}
+                  <div class="qty-ctrl">
+                    <button type="button" class="qty-minus" data-key="{{ item.key }}">−</button>
+                    <input
+                      type="number"
+                      name="updates[]"
+                      value="{{ item.quantity }}"
+                      min="0"
+                      data-key="{{ item.key }}"
+                      aria-label="Quantité"
+                    >
+                    <button type="button" class="qty-plus" data-key="{{ item.key }}">+</button>
+                  </div>
+                  <button
+                    type="button"
+                    class="cart-item__remove"
+                    data-key="{{ item.key }}"
+                  >RETIRER</button>
+                </div>
+                <div class="cart-item__price">
+                  {{ item.final_line_price | money }}
+                  {% if item.original_line_price != item.final_line_price %}
+                    <div style="text-decoration:line-through;opacity:0.35;font-size:0.75rem;">{{ item.original_line_price | money }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Résumé -->
+          <div class="cart-summary">
+            <div class="cart-summary__title">RÉSUMÉ DE COMMANDE</div>
+            <div class="cart-summary__row">
+              <span>Sous-total</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            {% if cart.total_discount > 0 %}
+              <div class="cart-summary__row" style="color:var(--color-primary);font-family:var(--font-display);font-size:0.8rem;letter-spacing:0.1em;">
+                <span>REMISE</span>
+                <span>-{{ cart.total_discount | money }}</span>
+              </div>
+            {% endif %}
+            <div class="cart-summary__row">
+              <span>Livraison</span>
+              <span>Offerte</span>
+            </div>
+            <div class="cart-summary__total">
+              <span>TOTAL</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <a href="/checkout" class="btn btn--primary btn--full">COMMANDER</a>
+            <a href="/collections/all" class="btn btn--ghost btn--full" style="margin-top:0.5rem;">CONTINUER MES ACHATS</a>
+            <p class="cart-summary__note">Livraison offerte en France métropolitaine</p>
+          </div>
+
+        </div>
+      </form>
+    {% else %}
+      <div style="text-align:center;padding:6rem 0;">
+        <p style="font-family:var(--font-body);font-style:italic;font-size:1.2rem;color:var(--color-text-muted);margin-bottom:2.5rem;">
+          Votre panier est vide.
+        </p>
+        <a href="/collections/all" class="btn btn--primary">DÉCOUVRIR LA COLLECTION</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart"
+}
+{% endschema %}

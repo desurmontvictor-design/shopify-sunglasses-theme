@@ -1,0 +1,80 @@
+<section class="newsletter">
+  <div class="container--narrow">
+    <div class="fade-up">
+      {% if section.settings.eyebrow != blank %}
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      <h2 class="newsletter__title">{{ section.settings.title | default: 'ACCÈS PRIVÉ' }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <p class="newsletter__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+
+      {% form 'customer', id: 'newsletter-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter__form">
+          <input
+            class="newsletter__input"
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.placeholder | default: 'Votre adresse email' }}"
+            required
+            aria-label="Email"
+          >
+          <button type="submit" class="newsletter__btn">
+            {{ section.settings.btn_label | default: "S'INSCRIRE" }}
+          </button>
+        </div>
+        {% if form.posted_successfully? %}
+          <p style="text-align:center;margin-top:1rem;font-family:var(--font-body);font-style:italic;font-size:0.85rem;color:var(--color-primary);">
+            Merci. Vous faites maintenant partie du cercle Clairzal.
+          </p>
+        {% endif %}
+      {% endform %}
+
+      <p class="newsletter__legal">
+        En vous inscrivant, vous acceptez notre politique de confidentialité. Désinscription à tout moment.
+      </p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Texte d'accroche",
+      "default": "Le cercle Clairzal"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "ACCÈS PRIVÉ"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre italic",
+      "default": "Nouvelles collections, séries limitées, avant-premières. Réservé à nos abonnés."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder email",
+      "default": "Votre adresse email"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Texte bouton",
+      "default": "S'INSCRIRE"
+    }
+  ],
+  "presets": [
+    { "name": "Newsletter", "category": "Email" }
+  ]
+}
+{% endschema %}

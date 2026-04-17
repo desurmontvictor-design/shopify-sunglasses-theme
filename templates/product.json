@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_buy_now": true,
+        "show_reviews": false
+      }
+    }
+  },
+  "order": ["main"]
+}

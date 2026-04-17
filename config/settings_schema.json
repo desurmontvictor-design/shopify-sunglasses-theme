@@ -1,0 +1,65 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Clairzal",
+    "theme_version": "1.0.0",
+    "theme_author": "Clairzal",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Couleur principale (navy)",
+        "default": "#001532"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Couleur de fond (blanc cassé)",
+        "default": "#f5f3ee"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Couleur secondaire (gris chaud)",
+        "default": "#eceae4"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "select",
+        "id": "font_heading",
+        "label": "Police des titres",
+        "options": [
+          { "value": "bebas", "label": "Bebas Neue" }
+        ],
+        "default": "bebas",
+        "info": "Bebas Neue chargée via Google Fonts"
+      }
+    ]
+  },
+  {
+    "name": "Boutique",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_cart_drawer",
+        "label": "Activer le panier coulissant",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "currency",
+        "label": "Devise",
+        "default": "EUR"
+      }
+    ]
+  }
+]

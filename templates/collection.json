@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "eyebrow": "Collection",
+        "per_page": 12
+      }
+    }
+  },
+  "order": ["main"]
+}
