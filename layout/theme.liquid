@@ -3,75 +3,61 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="{{ settings.color_primary }}">
-
+  <meta name="theme-color" content="#001532">
   <title>
     {{ page_title }}
-    {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
-    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- unless page_title contains shop.name %} — {{ shop.name }}{% endunless -%}
   </title>
-
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
   {% endif %}
-
   <link rel="canonical" href="{{ canonical_url }}">
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-
   {{ content_for_header }}
-
   {{ 'theme.css' | asset_url | stylesheet_tag }}
-
   <style>
     :root {
-      --color-primary: {{ settings.color_primary }};
-      --color-bg: {{ settings.color_bg }};
-      --color-secondary: {{ settings.color_secondary }};
-      --color-primary-dark: #000e24;
+      --navy:  {{ settings.color_primary  | default: '#001532' }};
+      --cream: {{ settings.color_bg       | default: '#f5f3ee' }};
+      --warm:  {{ settings.color_secondary| default: '#eceae4' }};
     }
   </style>
 </head>
-
-<body class="template-{{ template.name }}">
+<body class="t-{{ template.name }}">
 
   {% section 'announcement-bar' %}
   {% section 'header' %}
 
-  <main id="main-content" role="main" tabindex="-1">
-    {{ content_for_layout }}
-  </main>
+  <main id="main" role="main">{{ content_for_layout }}</main>
 
   {% section 'footer' %}
 
-  <!-- Cart Drawer -->
-  <div id="cart-drawer" class="cart-drawer" aria-hidden="true" role="dialog" aria-label="Panier">
-    <div class="cart-drawer__overlay" id="cart-overlay"></div>
-    <div class="cart-drawer__panel">
-      <div class="cart-drawer__head">
-        <span class="cart-drawer__title">VOTRE SÉLECTION</span>
-        <button class="cart-drawer__close" id="cart-close" aria-label="Fermer">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <line x1="1" y1="1" x2="17" y2="17" stroke="currentColor" stroke-width="1.2"/>
-            <line x1="17" y1="1" x2="1" y2="17" stroke="currentColor" stroke-width="1.2"/>
+  <!-- Cart drawer -->
+  <div class="cdrawer" id="cdrawer" aria-hidden="true">
+    <div class="cdrawer__veil" id="cdrawer-veil"></div>
+    <div class="cdrawer__panel" role="dialog" aria-label="Panier">
+      <div class="cdrawer__hd">
+        <span class="cdrawer__title">VOTRE PANIER</span>
+        <button class="cdrawer__close" id="cdrawer-close" aria-label="Fermer">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <line x1="1" y1="1" x2="15" y2="15" stroke="currentColor" stroke-width="1"/>
+            <line x1="15" y1="1" x2="1" y2="15" stroke="currentColor" stroke-width="1"/>
           </svg>
         </button>
       </div>
-      <div class="cart-drawer__body" id="cart-drawer-body">
-        <p class="cart-drawer__empty">Votre panier est vide.</p>
+      <div class="cdrawer__body" id="cdrawer-body">
+        <p class="cdrawer__empty">Votre panier est vide.</p>
       </div>
-      <div class="cart-drawer__foot" id="cart-drawer-foot" style="display:none;">
-        <div class="cart-drawer__subtotal">
+      <div class="cdrawer__foot" id="cdrawer-foot" style="display:none">
+        <div class="cdrawer__sub">
           <span>SOUS-TOTAL</span>
-          <span id="drawer-subtotal"></span>
+          <span id="cdrawer-subtotal"></span>
         </div>
-        <p class="cart-drawer__shipping">Livraison offerte en France métropolitaine</p>
-        <a href="/checkout" class="btn btn--primary btn--full">COMMANDER</a>
-        <a href="/cart" class="btn btn--ghost btn--full" style="margin-top:0.5rem;">VOIR LE PANIER</a>
+        <p class="cdrawer__ship">Livraison offerte en France</p>
+        <a href="/checkout" class="btn btn-navy btn-full">COMMANDER</a>
+        <a href="/cart" class="btn btn-line btn-full">VOIR LE PANIER</a>
       </div>
     </div>
   </div>

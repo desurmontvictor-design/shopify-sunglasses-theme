@@ -1,81 +1,66 @@
-{% assign product = product %}
-{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign cv = product.selected_or_first_available_variant %}
 
-<div class="product-layout" id="product-{{ product.id }}">
+<div class="pdp" id="pdp-{{ product.id }}">
 
-  <!-- Galerie gauche -->
-  <div class="product-gallery">
-    <div class="product-gallery__main">
+  <!-- Galerie -->
+  <div class="pdp__gallery">
+    <div class="pdp__main-img" id="pdp-main">
       <img
-        id="main-product-img"
-        src="{{ product.featured_image | img_url: '900x' }}"
-        srcset="{{ product.featured_image | img_url: '600x' }} 600w,
-                {{ product.featured_image | img_url: '900x' }} 900w"
-        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        id="pdp-img"
+        src="{{ product.featured_image | img_url: '1000x' }}"
+        srcset="{{ product.featured_image | img_url: '700x' }} 700w, {{ product.featured_image | img_url: '1000x' }} 1000w"
+        alt="{{ product.title | escape }}"
         loading="eager"
       >
     </div>
     {% if product.images.size > 1 %}
-      <div class="product-gallery__thumbs">
-        {% for image in product.images limit: 5 %}
-          <div
-            class="product-gallery__thumb {% if forloop.first %}active{% endif %}"
-            data-src="{{ image | img_url: '900x' }}"
-            role="button"
-            tabindex="0"
-            aria-label="Vue {{ forloop.index }}"
-          >
-            <img src="{{ image | img_url: '200x' }}" alt="{{ image.alt | escape }}">
+      <div class="pdp__thumbs">
+        {% for img in product.images limit: 6 %}
+          <div class="pdp__thumb {% if forloop.first %}on{% endif %}" data-src="{{ img | img_url: '1000x' }}" tabindex="0">
+            <img src="{{ img | img_url: '200x' }}" alt="{{ img.alt | escape }}">
           </div>
         {% endfor %}
       </div>
     {% endif %}
   </div>
 
-  <!-- Infos droite -->
-  <div class="product-info">
-    <div class="product-info__num">N°{{ product.id | modulo: 100 | prepend: '0' | slice: -2, 2 }}</div>
-    <h1 class="product-info__title">{{ product.title | upcase }}</h1>
+  <!-- Infos -->
+  <div class="pdp__info">
 
-    <div class="product-info__price" id="product-price">
-      {% if current_variant.compare_at_price > current_variant.price %}
-        <span class="product-info__price-compare">{{ current_variant.compare_at_price | money }}</span>
-      {% endif %}
-      {{ current_variant.price | money }}
+    <div class="pdp__num">N°{{ product.id | modulo: 99 | plus: 1 | prepend: '0' | slice: -2, 2 }}</div>
+    <h1 class="pdp__name">{{ product.title | upcase }}</h1>
+
+    <div class="pdp__price" id="pdp-price">
+      {% if cv.compare_at_price > cv.price %}<s>{{ cv.compare_at_price | money }}</s>{% endif %}
+      {{ cv.price | money }}
     </div>
 
     {% if product.description != blank %}
-      <p class="product-info__desc">{{ product.description | strip_html | truncate: 200 }}</p>
+      <p class="pdp__desc">{{ product.description | strip_html | truncate: 220 }}</p>
     {% endif %}
 
-    <hr class="product-info__divider">
+    <hr class="pdp__divider">
 
-    {% form 'product', product, id: 'product-form' %}
-      <input type="hidden" name="id" id="variant-id" value="{{ current_variant.id }}">
+    <form id="pdp-form" method="post" action="/cart/add">
+      <input type="hidden" name="id" id="pdp-variant" value="{{ cv.id }}">
 
       {% unless product.has_only_default_variant %}
-        {% for option in product.options_with_values %}
-          <div style="margin-bottom:1.25rem;">
-            <span class="product-info__label">{{ option.name | upcase }}</span>
-            {% if option.name == 'Couleur' or option.name == 'Color' %}
-              <div class="variant-swatches" data-option="{{ forloop.index0 }}">
-                {% for value in option.values %}
-                  <button
-                    type="button"
-                    class="swatch {% if forloop.first %}active{% endif %}"
-                    data-value="{{ value }}"
-                    title="{{ value }}"
-                    style="background-color:{{ value | downcase | replace: ' ', '' }};"
-                    aria-label="{{ value }}"
-                  ></button>
+        {% for opt in product.options_with_values %}
+          <div style="margin-bottom:1.5rem;">
+            <span class="pdp__label">{{ opt.name | upcase }}</span>
+            {% if opt.name == 'Couleur' or opt.name == 'Color' %}
+              <div class="swatches" data-opt="{{ forloop.index0 }}">
+                {% for v in opt.values %}
+                  <div class="swatch {% if forloop.first %}on{% endif %}"
+                    data-val="{{ v }}"
+                    style="background:{{ v | downcase | replace: ' ', '' }};"
+                    title="{{ v }}" tabindex="0" role="button"></div>
                 {% endfor %}
               </div>
             {% else %}
-              <div class="variant-buttons" data-option="{{ forloop.index0 }}">
-                {% for value in option.values %}
-                  <button type="button" class="variant-btn {% if forloop.first %}active{% endif %}" data-value="{{ value }}">
-                    {{ value }}
-                  </button>
+              <div class="vpills" data-opt="{{ forloop.index0 }}">
+                {% for v in opt.values %}
+                  <button type="button" class="vpill {% if forloop.first %}on{% endif %}" data-val="{{ v }}">{{ v }}</button>
                 {% endfor %}
               </div>
             {% endif %}
@@ -83,109 +68,54 @@
         {% endfor %}
       {% endunless %}
 
-      <hr class="product-info__divider">
+      <hr class="pdp__divider">
 
-      <div class="product-info__actions">
-        <button
-          type="submit"
-          class="btn btn--primary btn--full"
-          id="add-to-cart-btn"
-          {% unless current_variant.available %}disabled{% endunless %}
-        >
-          {% if current_variant.available %}
-            AJOUTER AU PANIER
-          {% else %}
-            ÉPUISÉ
-          {% endif %}
+      <div class="pdp__ctas">
+        <button type="submit" class="btn btn-navy btn-full" id="pdp-atc" {% unless cv.available %}disabled{% endunless %}>
+          {% if cv.available %}AJOUTER AU PANIER{% else %}ÉPUISÉ{% endif %}
         </button>
         {% if section.settings.show_buy_now %}
-          <a href="/checkout?variant={{ current_variant.id }}" class="btn btn--ghost btn--full" id="buy-now-btn">
+          <a href="/checkout?variant={{ cv.id }}" class="btn btn-line btn-full" id="pdp-buynow">
             ACHETER MAINTENANT
           </a>
         {% endif %}
       </div>
-    {% endform %}
+    </form>
 
     <!-- Accordion -->
-    <div class="accordion">
+    <div class="acc">
       {% if product.description != blank %}
-        <div class="accordion__item">
-          <button class="accordion__trigger" type="button">
-            DESCRIPTION
-            <span class="accordion__icon" aria-hidden="true"></span>
-          </button>
-          <div class="accordion__body">
-            <div class="accordion__content">{{ product.description }}</div>
-          </div>
+        <div class="acc__item">
+          <button class="acc__hd" type="button">DESCRIPTION <span class="acc__ico"></span></button>
+          <div class="acc__bd"><div class="acc__content">{{ product.description }}</div></div>
         </div>
       {% endif %}
-      <div class="accordion__item">
-        <button class="accordion__trigger" type="button">
-          CARACTÉRISTIQUES
-          <span class="accordion__icon" aria-hidden="true"></span>
-        </button>
-        <div class="accordion__body">
-          <div class="accordion__content">
-            {{ section.settings.characteristics | default: 'Monture acétate · Verres UV400 catégorie 3 · Fabriqué en Italie · Étui rigide inclus · Chiffon microfibre inclus' }}
-          </div>
+      <div class="acc__item">
+        <button class="acc__hd" type="button">CARACTÉRISTIQUES <span class="acc__ico"></span></button>
+        <div class="acc__bd">
+          <div class="acc__content">{{ section.settings.specs | default: 'Monture acétate · Verres polarisés UV400 · Catégorie 3 · Fabriqué en Italie · Étui rigide + chiffon microfibre inclus' }}</div>
         </div>
       </div>
-      <div class="accordion__item">
-        <button class="accordion__trigger" type="button">
-          LIVRAISON & RETOURS
-          <span class="accordion__icon" aria-hidden="true"></span>
-        </button>
-        <div class="accordion__body">
-          <div class="accordion__content">
-            {{ section.settings.delivery | default: 'Livraison offerte en France métropolitaine. Expédition sous 24–48h (jours ouvrés). Retours gratuits sous 30 jours.' }}
-          </div>
+      <div class="acc__item">
+        <button class="acc__hd" type="button">LIVRAISON & RETOURS <span class="acc__ico"></span></button>
+        <div class="acc__bd">
+          <div class="acc__content">{{ section.settings.delivery | default: 'Livraison offerte en France métropolitaine. Expédition sous 24–48h (jours ouvrés). Retours gratuits sous 30 jours.' }}</div>
         </div>
       </div>
     </div>
 
-    <!-- Avis Loox -->
-    {% if section.settings.show_reviews %}
-      <div style="margin-top:2rem;">
-        {{ 'loox-widget' | loox_widget }}
-      </div>
-    {% endif %}
-
   </div>
 </div>
 
-<!-- Variants JSON for JS -->
-<script type="application/json" id="product-variants-json">
-  {{ product.variants | json }}
-</script>
+<script type="application/json" id="variants-json">{{ product.variants | json }}</script>
 
 {% schema %}
 {
   "name": "Product Main",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_buy_now",
-      "label": "Afficher 'ACHETER MAINTENANT'",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_reviews",
-      "label": "Afficher avis Loox",
-      "default": false
-    },
-    {
-      "type": "textarea",
-      "id": "characteristics",
-      "label": "Caractéristiques (défaut)",
-      "default": "Monture acétate · Verres UV400 catégorie 3 · Fabriqué en Italie · Étui rigide inclus · Chiffon microfibre inclus"
-    },
-    {
-      "type": "textarea",
-      "id": "delivery",
-      "label": "Livraison & retours (texte)",
-      "default": "Livraison offerte en France métropolitaine. Expédition sous 24–48h. Retours gratuits 30 jours."
-    }
+    { "type": "checkbox",  "id": "show_buy_now", "label": "Bouton acheter maintenant", "default": true },
+    { "type": "textarea",  "id": "specs",        "label": "Caractéristiques" },
+    { "type": "textarea",  "id": "delivery",     "label": "Livraison & retours" }
   ]
 }
 {% endschema %}

@@ -1,21 +1,15 @@
 <section class="statement">
-  <div class="statement__watermark" aria-hidden="true">
-    {{ section.settings.watermark | default: 'CLAIRZAL' | upcase }}
-  </div>
-  <div class="statement__content fade-up">
+  <div class="statement__wm" aria-hidden="true">{{ section.settings.wm | default: 'CLAIRZAL' | upcase }}</div>
+  <div class="statement__body reveal">
     {% if section.settings.eyebrow != blank %}
-      <span class="eyebrow eyebrow--light" style="margin-bottom:2rem;">{{ section.settings.eyebrow }}</span>
+      <span class="s-eyebrow" style="color:rgba(245,243,238,.3);margin-bottom:2rem;">{{ section.settings.eyebrow }}</span>
     {% endif %}
-    <h2 class="statement__title">{{ section.settings.title | default: "L'ÉLÉGANCE A TROUVÉ SON REGARD" }}</h2>
-    {% if section.settings.subtitle != blank %}
-      <p class="statement__subtitle">{{ section.settings.subtitle }}</p>
+    <h2 class="statement__title">{{ section.settings.title | default: "L'ÉLÉGANCE A TROUVÉ SON REGARD" | newline_to_br }}</h2>
+    {% if section.settings.sub != blank %}
+      <p class="statement__sub">{{ section.settings.sub }}</p>
     {% endif %}
     {% if section.settings.cta_url != blank %}
-      <div style="margin-top:3rem;">
-        <a href="{{ section.settings.cta_url }}" class="btn btn--ghost-light">
-          {{ section.settings.cta_label | default: 'EXPLORER' }}
-        </a>
-      </div>
+      <a href="{{ section.settings.cta_url }}" class="btn btn-line-w">{{ section.settings.cta | default: 'EXPLORER' }}</a>
     {% endif %}
   </div>
 </section>
@@ -24,43 +18,13 @@
 {
   "name": "Statement",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Texte d'accroche"
-    },
-    {
-      "type": "textarea",
-      "id": "title",
-      "label": "Grand titre",
-      "default": "L'ÉLÉGANCE A TROUVÉ SON REGARD"
-    },
-    {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "Sous-titre italic",
-      "default": "Chaque paire raconte une histoire. La vôtre commence ici."
-    },
-    {
-      "type": "text",
-      "id": "watermark",
-      "label": "Texte watermark (arrière-plan)",
-      "default": "CLAIRZAL"
-    },
-    {
-      "type": "url",
-      "id": "cta_url",
-      "label": "Lien bouton"
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "Texte bouton",
-      "default": "EXPLORER"
-    }
+    { "type": "text",     "id": "eyebrow", "label": "Accroche" },
+    { "type": "textarea", "id": "title",   "label": "Titre",          "default": "L'ÉLÉGANCE\nA TROUVÉ\nSON REGARD" },
+    { "type": "textarea", "id": "sub",     "label": "Sous-titre",     "default": "Chaque paire raconte une histoire. La vôtre commence ici." },
+    { "type": "text",     "id": "wm",      "label": "Watermark texte","default": "CLAIRZAL" },
+    { "type": "url",      "id": "cta_url", "label": "Lien CTA" },
+    { "type": "text",     "id": "cta",     "label": "Texte CTA",      "default": "EXPLORER" }
   ],
-  "presets": [
-    { "name": "Statement", "category": "Text" }
-  ]
+  "presets": [{ "name": "Statement", "category": "Text" }]
 }
 {% endschema %}

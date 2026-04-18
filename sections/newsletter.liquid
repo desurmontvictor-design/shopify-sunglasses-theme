@@ -1,40 +1,29 @@
-<section class="newsletter">
-  <div class="container--narrow">
-    <div class="fade-up">
-      {% if section.settings.eyebrow != blank %}
-        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+<section class="nl-section">
+  <div class="wrap--sm reveal">
+    {% if section.settings.eyebrow != blank %}
+      <span class="s-eyebrow" style="text-align:center;display:block;">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+    <h2 class="nl-title t-disp t-lg">{{ section.settings.title | default: 'ACCÈS PRIVÉ' }}</h2>
+    {% if section.settings.sub != blank %}
+      <p class="nl-sub">{{ section.settings.sub }}</p>
+    {% endif %}
+    {% form 'customer', id: 'nl-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="nl-form">
+        <input class="nl-input" type="email" name="contact[email]"
+          placeholder="{{ section.settings.placeholder | default: 'Votre adresse email' }}"
+          required aria-label="Email">
+        <button type="submit" class="nl-btn">{{ section.settings.btn | default: "S'INSCRIRE" }}</button>
+      </div>
+      {% if form.posted_successfully? %}
+        <p style="text-align:center;margin-top:1rem;font-family:var(--f-body);font-style:italic;font-size:.88rem;color:var(--muted);">
+          Merci. Bienvenue dans le cercle Clairzal.
+        </p>
       {% endif %}
-      <h2 class="newsletter__title">{{ section.settings.title | default: 'ACCÈS PRIVÉ' }}</h2>
-      {% if section.settings.subtitle != blank %}
-        <p class="newsletter__subtitle">{{ section.settings.subtitle }}</p>
-      {% endif %}
-
-      {% form 'customer', id: 'newsletter-form' %}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <div class="newsletter__form">
-          <input
-            class="newsletter__input"
-            type="email"
-            name="contact[email]"
-            placeholder="{{ section.settings.placeholder | default: 'Votre adresse email' }}"
-            required
-            aria-label="Email"
-          >
-          <button type="submit" class="newsletter__btn">
-            {{ section.settings.btn_label | default: "S'INSCRIRE" }}
-          </button>
-        </div>
-        {% if form.posted_successfully? %}
-          <p style="text-align:center;margin-top:1rem;font-family:var(--font-body);font-style:italic;font-size:0.85rem;color:var(--color-primary);">
-            Merci. Vous faites maintenant partie du cercle Clairzal.
-          </p>
-        {% endif %}
-      {% endform %}
-
-      <p class="newsletter__legal">
-        En vous inscrivant, vous acceptez notre politique de confidentialité. Désinscription à tout moment.
-      </p>
-    </div>
+    {% endform %}
+    <p style="font-family:var(--f-body);font-style:italic;font-size:.72rem;color:var(--muted);margin-top:1rem;text-align:center;">
+      Désinscription à tout moment. Aucun spam.
+    </p>
   </div>
 </section>
 
@@ -42,39 +31,12 @@
 {
   "name": "Newsletter",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Texte d'accroche",
-      "default": "Le cercle Clairzal"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titre",
-      "default": "ACCÈS PRIVÉ"
-    },
-    {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "Sous-titre italic",
-      "default": "Nouvelles collections, séries limitées, avant-premières. Réservé à nos abonnés."
-    },
-    {
-      "type": "text",
-      "id": "placeholder",
-      "label": "Placeholder email",
-      "default": "Votre adresse email"
-    },
-    {
-      "type": "text",
-      "id": "btn_label",
-      "label": "Texte bouton",
-      "default": "S'INSCRIRE"
-    }
+    { "type": "text",     "id": "eyebrow",     "label": "Accroche",     "default": "Le cercle Clairzal"    },
+    { "type": "text",     "id": "title",       "label": "Titre",        "default": "ACCÈS PRIVÉ"           },
+    { "type": "textarea", "id": "sub",         "label": "Sous-titre",   "default": "Nouvelles collections, séries limitées, avant-premières. Réservé à nos abonnés." },
+    { "type": "text",     "id": "placeholder", "label": "Placeholder",  "default": "Votre adresse email"   },
+    { "type": "text",     "id": "btn",         "label": "Bouton",       "default": "S'INSCRIRE"            }
   ],
-  "presets": [
-    { "name": "Newsletter", "category": "Email" }
-  ]
+  "presets": [{ "name": "Newsletter", "category": "Email" }]
 }
 {% endschema %}

@@ -1,37 +1,27 @@
 <footer class="site-footer">
-  <div class="container">
-    <div class="footer__grid">
+  <div class="wrap">
+    <div class="footer-grid">
 
-      <!-- Brand -->
       <div>
-        <a href="/" class="footer__brand-logo">{{ section.settings.logo_text | default: shop.name | upcase }}</a>
-        <p class="footer__brand-tagline">{{ section.settings.tagline | default: "L'élégance a trouvé son regard." }}</p>
-        <div class="footer__social">
+        <a href="/" class="footer-logo">{{ section.settings.logo | default: shop.name | upcase }}</a>
+        <p class="footer-tagline">{{ section.settings.tagline | default: "L'élégance a trouvé son regard." }}</p>
+        <div class="footer-social">
           {% if section.settings.instagram != blank %}
             <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
                 <rect x="2" y="2" width="20" height="20" rx="5"/>
-                <circle cx="12" cy="12" r="5"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                <circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/>
               </svg>
             </a>
           {% endif %}
           {% if section.settings.tiktok != blank %}
-            <a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.85a8.18 8.18 0 004.77 1.52V6.87a4.85 4.85 0 01-1-.18z"/>
-              </svg>
-            </a>
-          {% endif %}
-          {% if section.settings.pinterest != blank %}
-            <a href="{{ section.settings.pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">P</a>
+            <a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">TK</a>
           {% endif %}
         </div>
       </div>
 
-      <!-- Boutique -->
-      <div class="footer__col">
-        <span class="footer__col-title">BOUTIQUE</span>
+      <div class="footer-col">
+        <span class="footer-col-title">BOUTIQUE</span>
         <ul>
           <li><a href="/collections/all">Toutes les lunettes</a></li>
           <li><a href="/collections/nouveautes">Nouveautés</a></li>
@@ -41,41 +31,36 @@
         </ul>
       </div>
 
-      <!-- Clairzal -->
-      <div class="footer__col">
-        <span class="footer__col-title">CLAIRZAL</span>
+      <div class="footer-col">
+        <span class="footer-col-title">CLAIRZAL</span>
         <ul>
           <li><a href="/pages/notre-histoire">Notre histoire</a></li>
           <li><a href="/pages/artisanat">Artisanat</a></li>
-          <li><a href="/pages/durabilite">Durabilité</a></li>
           <li><a href="/blogs/journal">Journal</a></li>
           <li><a href="/pages/presse">Presse</a></li>
         </ul>
       </div>
 
-      <!-- Aide -->
-      <div class="footer__col">
-        <span class="footer__col-title">AIDE</span>
+      <div class="footer-col">
+        <span class="footer-col-title">AIDE</span>
         <ul>
           <li><a href="/pages/livraison">Livraison & retours</a></li>
           <li><a href="/pages/guide-tailles">Guide des tailles</a></li>
           <li><a href="/pages/faq">FAQ</a></li>
           <li><a href="/pages/contact">Contact</a></li>
-          <li><a href="/pages/garantie">Garantie</a></li>
         </ul>
       </div>
 
     </div>
 
-    <!-- Bottom -->
-    <div class="footer__bottom">
-      <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.</span>
-      <div style="display:flex;gap:2rem;">
+    <div class="footer-bottom">
+      <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+      <div class="footer-links">
         <a href="/policies/privacy-policy">Confidentialité</a>
         <a href="/policies/terms-of-service">CGV</a>
         <a href="/policies/refund-policy">Remboursements</a>
       </div>
-      <span>Fait avec soin.</span>
+      <span style="opacity:.4;">Fait avec soin, en France.</span>
     </div>
   </div>
 </footer>
@@ -84,33 +69,10 @@
 {
   "name": "Footer",
   "settings": [
-    {
-      "type": "text",
-      "id": "logo_text",
-      "label": "Logo texte",
-      "default": "CLAIRZAL"
-    },
-    {
-      "type": "textarea",
-      "id": "tagline",
-      "label": "Tagline",
-      "default": "L'élégance a trouvé son regard."
-    },
-    {
-      "type": "url",
-      "id": "instagram",
-      "label": "URL Instagram"
-    },
-    {
-      "type": "url",
-      "id": "tiktok",
-      "label": "URL TikTok"
-    },
-    {
-      "type": "url",
-      "id": "pinterest",
-      "label": "URL Pinterest"
-    }
+    { "type": "text",     "id": "logo",      "label": "Logo",     "default": "CLAIRZAL" },
+    { "type": "textarea", "id": "tagline",   "label": "Tagline",  "default": "L'élégance a trouvé son regard." },
+    { "type": "url",      "id": "instagram", "label": "Instagram" },
+    { "type": "url",      "id": "tiktok",    "label": "TikTok"    }
   ]
 }
 {% endschema %}

@@ -1,12 +1,8 @@
-<div class="reassurance">
+<div class="assurance">
   {% for block in section.blocks %}
-    <div class="reassurance__item" {{ block.shopify_attributes }}>
-      {% if block.settings.title != blank %}
-        <div class="reassurance__title">{{ block.settings.title | upcase }}</div>
-      {% endif %}
-      {% if block.settings.text != blank %}
-        <div class="reassurance__text">{{ block.settings.text }}</div>
-      {% endif %}
+    <div class="assurance__item" {{ block.shopify_attributes }}>
+      <span class="assurance__label t-label">{{ block.settings.title | upcase }}</span>
+      <span class="assurance__desc">{{ block.settings.desc }}</span>
     </div>
   {% endfor %}
 </div>
@@ -15,36 +11,20 @@
 {
   "name": "Réassurance",
   "max_blocks": 3,
-  "blocks": [
-    {
-      "type": "item",
-      "name": "Élément",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Titre",
-          "default": "LIVRAISON OFFERTE"
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Description",
-          "default": "En France métropolitaine, sans minimum d'achat."
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Réassurance",
-      "category": "Text",
-      "blocks": [
-        { "type": "item", "settings": { "title": "LIVRAISON OFFERTE", "text": "En France métropolitaine, sans minimum d'achat." } },
-        { "type": "item", "settings": { "title": "SÉRIE LIMITÉE", "text": "Chaque modèle est édité en quantités restreintes." } },
-        { "type": "item", "settings": { "title": "RETOURS 30 JOURS", "text": "Pas convaincu·e ? On reprend, sans question." } }
-      ]
-    }
-  ]
+  "blocks": [{
+    "type": "item", "name": "Élément",
+    "settings": [
+      { "type": "text", "id": "title", "label": "Titre", "default": "LIVRAISON OFFERTE" },
+      { "type": "text", "id": "desc",  "label": "Description", "default": "En France, sans minimum." }
+    ]
+  }],
+  "presets": [{
+    "name": "Réassurance", "category": "Text",
+    "blocks": [
+      { "type": "item", "settings": { "title": "LIVRAISON OFFERTE", "desc": "En France métropolitaine, sans minimum d'achat." } },
+      { "type": "item", "settings": { "title": "SÉRIE LIMITÉE",     "desc": "Chaque modèle est édité en quantités restreintes." } },
+      { "type": "item", "settings": { "title": "RETOURS 30 JOURS",  "desc": "Pas convaincu·e ? On reprend, sans question." } }
+    ]
+  }]
 }
 {% endschema %}

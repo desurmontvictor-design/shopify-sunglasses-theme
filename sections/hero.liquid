@@ -1,45 +1,55 @@
-<section class="hero" id="hero-{{ section.id }}">
+<section class="hero">
 
-  <!-- Colonne gauche : texte -->
-  <div class="hero__col hero__col--left">
-    {% if section.settings.eyebrow != blank %}
-      <span class="hero__eyebrow">{{ section.settings.eyebrow }}</span>
-    {% endif %}
-    {% if section.settings.title != blank %}
-      <h1 class="hero__title">{{ section.settings.title }}</h1>
-    {% endif %}
-    {% if section.settings.subtitle != blank %}
-      <p class="hero__subtitle">{{ section.settings.subtitle }}</p>
-    {% endif %}
-    {% if section.settings.cta_url != blank %}
-      <div>
-        <a href="{{ section.settings.cta_url }}" class="btn btn--white">
-          {{ section.settings.cta_label | default: 'DÉCOUVRIR LA COLLECTION' }}
-        </a>
-      </div>
-    {% endif %}
-  </div>
-
-  <!-- Colonne droite : image cercle -->
-  <div class="hero__col hero__col--right">
+  <div class="hero__bg">
     {% if section.settings.image != blank %}
-      <div class="hero__circle">
-        <img
-          src="{{ section.settings.image | img_url: '700x' }}"
-          srcset="{{ section.settings.image | img_url: '500x' }} 500w,
-                  {{ section.settings.image | img_url: '700x' }} 700w"
-          sizes="(max-width: 768px) 80vw, 40vw"
-          alt="{{ section.settings.image.alt | default: shop.name | escape }}"
-          loading="eager"
-          fetchpriority="high"
-        >
-      </div>
+      <img
+        src="{{ section.settings.image | img_url: '2000x' }}"
+        srcset="{{ section.settings.image | img_url: '800x'  }} 800w,
+                {{ section.settings.image | img_url: '1400x' }} 1400w,
+                {{ section.settings.image | img_url: '2000x' }} 2000w"
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | default: shop.name | escape }}"
+        loading="eager"
+        fetchpriority="high"
+      >
     {% else %}
-      <div class="hero__placeholder">
-        Photo produit
-      </div>
+      <div style="width:100%;height:100%;background:linear-gradient(160deg,var(--navy-d) 0%,var(--navy) 100%);"></div>
     {% endif %}
   </div>
+
+  <div class="hero__veil"></div>
+
+  <div class="hero__content">
+    <div class="hero__left reveal">
+      {% if section.settings.tag != blank %}
+        <span class="hero__tag">{{ section.settings.tag }}</span>
+      {% endif %}
+      <h1 class="hero__title">{{ section.settings.title | default: "L'ÉLÉGANCE" | newline_to_br }}</h1>
+      {% if section.settings.cta_url != blank %}
+        <a href="{{ section.settings.cta_url }}" class="btn btn-cream">
+          {{ section.settings.cta | default: 'DÉCOUVRIR' }}
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 4h12M8 1l4 3-4 3" stroke="currentColor" stroke-width=".8"/></svg>
+        </a>
+      {% endif %}
+    </div>
+    <div class="hero__right reveal reveal-delay-2">
+      {% if section.settings.sub != blank %}
+        <p class="hero__sub">{{ section.settings.sub }}</p>
+      {% endif %}
+      {% if section.settings.cta2_url != blank %}
+        <a href="{{ section.settings.cta2_url }}" class="link-arrow" style="color:rgba(245,243,238,.45);">
+          {{ section.settings.cta2 | default: 'NOTRE HISTOIRE' }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if section.settings.show_scroll %}
+    <div class="hero__scroll" aria-hidden="true">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  {% endif %}
 
 </section>
 
@@ -47,43 +57,16 @@
 {
   "name": "Hero",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Texte d'accroche",
-      "default": "PRINTEMPS — ÉTÉ 2026"
-    },
-    {
-      "type": "textarea",
-      "id": "title",
-      "label": "Titre principal",
-      "default": "L'ÉLÉGANCE A TROUVÉ SON REGARD"
-    },
-    {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "Sous-titre (italic)",
-      "default": "Des lunettes de soleil conçues pour celles et ceux qui portent leur caractère avec discrétion."
-    },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Image produit (cercle)"
-    },
-    {
-      "type": "url",
-      "id": "cta_url",
-      "label": "Lien du bouton"
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "Texte du bouton",
-      "default": "DÉCOUVRIR LA COLLECTION"
-    }
+    { "type": "image_picker", "id": "image",      "label": "Image plein écran" },
+    { "type": "text",         "id": "tag",         "label": "Tag (ex: Printemps 2026)",   "default": "Printemps — Été 2026" },
+    { "type": "textarea",     "id": "title",       "label": "Titre (une ligne par saut)", "default": "L'ÉLÉGANCE\nA TROUVÉ\nSON REGARD" },
+    { "type": "textarea",     "id": "sub",         "label": "Sous-titre (droite)",        "default": "Des lunettes de soleil conçues pour celles et ceux qui portent leur caractère avec discrétion." },
+    { "type": "url",          "id": "cta_url",     "label": "Lien bouton principal" },
+    { "type": "text",         "id": "cta",         "label": "Texte bouton principal",     "default": "DÉCOUVRIR LA COLLECTION" },
+    { "type": "url",          "id": "cta2_url",    "label": "Lien 2e lien" },
+    { "type": "text",         "id": "cta2",        "label": "Texte 2e lien",              "default": "NOTRE HISTOIRE" },
+    { "type": "checkbox",     "id": "show_scroll", "label": "Indicateur scroll",          "default": true }
   ],
-  "presets": [
-    { "name": "Hero", "category": "Image" }
-  ]
+  "presets": [{ "name": "Hero", "category": "Image" }]
 }
 {% endschema %}

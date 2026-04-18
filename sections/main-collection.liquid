@@ -1,133 +1,91 @@
-<!-- Collection Header -->
-<div class="collection-header">
-  <div>
-    {% if section.settings.eyebrow != blank %}
-      <span class="eyebrow eyebrow--light">{{ section.settings.eyebrow }}</span>
-    {% endif %}
-    <h1 class="collection-header__title">{{ collection.title | upcase }}</h1>
+<!-- Collection hero -->
+<div class="coll-hero" style="padding-top:var(--h);">
+  <div class="coll-hero__top">
+    <div>
+      {% if section.settings.eyebrow != blank %}
+        <span class="s-eyebrow" style="color:rgba(245,243,238,.35);">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      <h1 class="coll-hero__title">{{ collection.title | upcase }}</h1>
+    </div>
+    <div class="coll-hero__right">
+      <div class="coll-hero__count">{{ collection.products_count }} modèles</div>
+      {% if collection.description != blank %}
+        <p class="coll-hero__desc">{{ collection.description | strip_html | truncate: 100 }}</p>
+      {% endif %}
+    </div>
   </div>
-  <div style="text-align:right;">
-    <div class="collection-header__count">{{ collection.products_count }} modèles</div>
-    {% if collection.description != blank %}
-      <p style="font-family:var(--font-body);font-style:italic;font-size:0.85rem;color:rgba(245,243,238,0.45);max-width:320px;">
-        {{ collection.description | strip_html | truncate: 100 }}
-      </p>
-    {% endif %}
+  <div class="coll-bar">
+    <div class="coll-filters">
+      <button class="coll-pill on">TOUT</button>
+      <button class="coll-pill">NOUVEAUTÉS</button>
+      <button class="coll-pill">HOMME</button>
+      <button class="coll-pill">FEMME</button>
+      <button class="coll-pill">SÉRIES LIMITÉES</button>
+    </div>
+    <select class="coll-sort" onchange="location.href=location.pathname+'?sort_by='+this.value" aria-label="Trier">
+      <option value="manual"             {% if collection.sort_by == 'manual'             %}selected{% endif %}>PAR DÉFAUT</option>
+      <option value="price-ascending"    {% if collection.sort_by == 'price-ascending'    %}selected{% endif %}>PRIX CROISSANT</option>
+      <option value="price-descending"   {% if collection.sort_by == 'price-descending'   %}selected{% endif %}>PRIX DÉCROISSANT</option>
+      <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>NOUVEAUTÉS</option>
+      <option value="best-selling"       {% if collection.sort_by == 'best-selling'       %}selected{% endif %}>MEILLEURES VENTES</option>
+    </select>
   </div>
-</div>
-
-<!-- Toolbar -->
-<div class="collection-toolbar">
-  <div class="filter-tabs">
-    <button class="filter-tab active" data-filter="all">TOUT</button>
-    <button class="filter-tab" data-filter="nouveautes">NOUVEAUTÉS</button>
-    <button class="filter-tab" data-filter="homme">HOMME</button>
-    <button class="filter-tab" data-filter="femme">FEMME</button>
-    <button class="filter-tab" data-filter="editions-limitees">SÉRIES LIMITÉES</button>
-  </div>
-  <select
-    class="sort-select"
-    name="sort_by"
-    onchange="window.location.href = window.location.pathname + '?sort_by=' + this.value"
-    aria-label="Trier par"
-  >
-    {% assign sort_options = 'manual,price-ascending,price-descending,created-descending,best-selling' | split: ',' %}
-    {% assign sort_labels = 'Par défaut,Prix croissant,Prix décroissant,Nouveautés,Meilleures ventes' | split: ',' %}
-    {% for val in sort_options %}
-      <option value="{{ val }}" {% if collection.sort_by == val %}selected{% endif %}>
-        {{ sort_labels[forloop.index0] | upcase }}
-      </option>
-    {% endfor %}
-  </select>
 </div>
 
 <!-- Grid -->
-<div class="container" style="padding-top:2px;padding-bottom:2px;">
-  {% paginate collection.products by section.settings.per_page %}
-    <div class="collection-grid">
-      {% for product in collection.products %}
-        {% assign num = forloop.index | prepend: 'N°0' %}
-        {% assign badge = '' %}
-        {% if product.tags contains 'bestseller' %} {% assign badge = 'BESTSELLER' %} {% endif %}
-        {% if product.tags contains 'nouveau' or product.tags contains 'new' %} {% assign badge = 'NOUVEAU' %} {% endif %}
-
-        <a href="{{ product.url }}" class="product-card">
-          <div class="product-card__media">
-            {% if product.featured_image %}
-              <img
-                src="{{ product.featured_image | img_url: '500x' }}"
-                srcset="{{ product.featured_image | img_url: '350x' }} 350w,
-                        {{ product.featured_image | img_url: '500x' }} 500w"
-                sizes="(max-width:768px) 50vw, 33vw"
-                alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                loading="lazy"
-              >
-            {% else %}
-              <div style="width:100%;height:100%;background:var(--color-secondary);display:flex;align-items:center;justify-content:center;">
-                <span style="font-family:var(--font-body);font-style:italic;font-size:0.75rem;color:var(--color-text-muted);">Photo</span>
-              </div>
-            {% endif %}
-            <span class="product-card__num">{{ num }}</span>
-            {% if badge != '' %}
-              <span class="product-card__badge">{{ badge }}</span>
-            {% endif %}
-          </div>
-          <div class="product-card__info">
-            <div class="product-card__name">{{ product.title | upcase }}</div>
-            <div class="product-card__price">
-              {% if product.compare_at_price > product.price %}
-                <span class="product-card__price-compare">{{ product.compare_at_price | money }}</span>
-              {% endif %}
-              {{ product.price | money }}
-            </div>
-          </div>
-        </a>
-      {% else %}
-        <div style="grid-column:1/-1;padding:5rem 0;text-align:center;font-family:var(--font-body);font-style:italic;color:var(--color-text-muted);">
-          Aucun produit dans cette collection.
-        </div>
-      {% endfor %}
-    </div>
-
-    {% if paginate.pages > 1 %}
-      <div class="pagination">
-        {% if paginate.previous %}
-          <a href="{{ paginate.previous.url }}">←</a>
-        {% endif %}
-        {% for part in paginate.parts %}
-          {% if part.is_link %}
-            <a href="{{ part.url }}">{{ part.title }}</a>
+{% paginate collection.products by section.settings.per_page %}
+  <div class="coll-grid" style="background:var(--border);">
+    {% for product in collection.products %}
+      <a href="{{ product.url }}" class="pcard reveal">
+        <div class="pcard__fig" style="aspect-ratio:3/4;">
+          {% if product.featured_image %}
+            <img class="pcard__img"
+              src="{{ product.featured_image | img_url: '600x' }}"
+              srcset="{{ product.featured_image | img_url: '400x' }} 400w, {{ product.featured_image | img_url: '600x' }} 600w"
+              sizes="(max-width:768px) 50vw, 33vw"
+              alt="{{ product.title | escape }}" loading="lazy">
           {% else %}
-            <span class="current">{{ part.title }}</span>
+            <div style="width:100%;height:100%;background:var(--warm);"></div>
           {% endif %}
-        {% endfor %}
-        {% if paginate.next %}
-          <a href="{{ paginate.next.url }}">→</a>
-        {% endif %}
-      </div>
-    {% endif %}
-  {% endpaginate %}
-</div>
+          {% if product.tags contains 'bestseller' %}<span class="pcard__badge">BESTSELLER</span>{% endif %}
+          {% if product.tags contains 'nouveau' %}<span class="pcard__badge">NOUVEAU</span>{% endif %}
+          <div class="pcard__over">
+            <span class="pcard__add" data-id="{{ product.variants.first.id }}">AJOUTER AU PANIER</span>
+          </div>
+        </div>
+        <div class="pcard__meta">
+          <span class="pcard__name">{{ product.title | upcase }}</span>
+          <span class="pcard__price">
+            {% if product.compare_at_price > product.price %}
+              <s style="opacity:.35;margin-right:.3rem;">{{ product.compare_at_price | money }}</s>
+            {% endif %}
+            {{ product.price | money }}
+          </span>
+        </div>
+      </a>
+    {% else %}
+      <div style="grid-column:1/-1;padding:5rem;text-align:center;font-family:var(--f-body);font-style:italic;color:var(--muted);">Aucun produit.</div>
+    {% endfor %}
+  </div>
+
+  {% if paginate.pages > 1 %}
+    <div class="pagi">
+      {% if paginate.previous %}<a href="{{ paginate.previous.url }}">←</a>{% endif %}
+      {% for part in paginate.parts %}
+        {% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>
+        {% else %}<span class="cur">{{ part.title }}</span>{% endif %}
+      {% endfor %}
+      {% if paginate.next %}<a href="{{ paginate.next.url }}">→</a>{% endif %}
+    </div>
+  {% endif %}
+{% endpaginate %}
 
 {% schema %}
 {
   "name": "Collection Main",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Texte d'accroche",
-      "default": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "per_page",
-      "min": 6,
-      "max": 48,
-      "step": 3,
-      "label": "Produits par page",
-      "default": 12
-    }
+    { "type": "text",  "id": "eyebrow",  "label": "Accroche",          "default": "Collection" },
+    { "type": "range", "id": "per_page", "label": "Produits par page",  "min": 6, "max": 48, "step": 3, "default": 12 }
   ]
 }
 {% endschema %}
