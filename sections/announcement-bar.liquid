@@ -1,5 +1,5 @@
 {% if section.settings.show %}
-<div class="announcement-bar">
+<div class="announce">
   {{ section.settings.text }}
 </div>
 {% endif %}
@@ -8,18 +8,8 @@
 {
   "name": "Announcement Bar",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show",
-      "label": "Afficher la barre",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "text",
-      "label": "Texte",
-      "default": "LIVRAISON OFFERTE EN FRANCE — SÉRIE LIMITÉE"
-    }
+    { "type": "checkbox", "id": "show", "label": "Afficher la barre", "default": true },
+    { "type": "text",     "id": "text", "label": "Texte",             "default": "🚚 Livraison offerte en France · 2 paires = 1 offerte" }
   ]
 }
 {% endschema %}

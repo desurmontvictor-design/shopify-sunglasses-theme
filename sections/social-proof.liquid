@@ -1,0 +1,70 @@
+<section class="proof-section reveal">
+  <div class="wrap">
+
+    <div class="proof-section__hd">
+      <div class="proof-section__stars">★★★★★</div>
+      <h2 class="t-h2">{{ section.settings.title | default: 'Ils ont craqué.' }}</h2>
+      <p class="t-body" style="color:var(--gray);">{{ section.settings.sub | default: '+2 000 clients · Note moyenne 4,9/5' }}</p>
+    </div>
+
+    <div class="proof-grid">
+      {% for i in (1..3) %}
+        {% assign name_id  = 'r' | append: i | append: '_name' %}
+        {% assign text_id  = 'r' | append: i | append: '_text' %}
+        {% assign loc_id   = 'r' | append: i | append: '_loc' %}
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">"{{ section.settings[text_id] | default: 'Je les mets tous les jours depuis 3 semaines. Qualité top, livraison rapide.' }}"</p>
+          <div class="review-card__author">
+            <strong>{{ section.settings[name_id] | default: 'Client vérifié' }}</strong>
+            {% if section.settings[loc_id] != blank %}
+              <span style="color:var(--gray);font-size:.8rem;">· {{ section.settings[loc_id] }}</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="proof-section__badges reveal">
+      <div class="proof-badge">
+        <span class="proof-badge__num">{{ section.settings.stat1_num | default: '2 000+' }}</span>
+        <span class="proof-badge__label">{{ section.settings.stat1_label | default: 'paires vendues' }}</span>
+      </div>
+      <div class="proof-badge">
+        <span class="proof-badge__num">{{ section.settings.stat2_num | default: '4,9/5' }}</span>
+        <span class="proof-badge__label">{{ section.settings.stat2_label | default: 'note moyenne' }}</span>
+      </div>
+      <div class="proof-badge">
+        <span class="proof-badge__num">{{ section.settings.stat3_num | default: '30j' }}</span>
+        <span class="proof-badge__label">{{ section.settings.stat3_label | default: 'retours gratuits' }}</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Preuve sociale",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre",     "default": "Ils ont craqué." },
+    { "type": "text", "id": "sub",   "label": "Sous-titre","default": "+2 000 clients · Note moyenne 4,9/5" },
+    { "type": "text", "id": "r1_name", "label": "Avis 1 — Nom",    "default": "Thomas M." },
+    { "type": "text", "id": "r1_text", "label": "Avis 1 — Texte",  "default": "Je les mets tous les jours depuis 3 semaines. Qualité top, livraison rapide." },
+    { "type": "text", "id": "r1_loc",  "label": "Avis 1 — Ville",  "default": "Paris" },
+    { "type": "text", "id": "r2_name", "label": "Avis 2 — Nom",    "default": "Karim B." },
+    { "type": "text", "id": "r2_text", "label": "Avis 2 — Texte",  "default": "La paire Riviera est parfaite. On me demande souvent où je les ai achetées." },
+    { "type": "text", "id": "r2_loc",  "label": "Avis 2 — Ville",  "default": "Lyon" },
+    { "type": "text", "id": "r3_name", "label": "Avis 3 — Nom",    "default": "Lucas D." },
+    { "type": "text", "id": "r3_text", "label": "Avis 3 — Texte",  "default": "Rapport qualité-prix imbattable. On dirait des lunettes à 200€ pour 50€." },
+    { "type": "text", "id": "r3_loc",  "label": "Avis 3 — Ville",  "default": "Bordeaux" },
+    { "type": "text", "id": "stat1_num",   "label": "Stat 1 — Chiffre", "default": "2 000+" },
+    { "type": "text", "id": "stat1_label", "label": "Stat 1 — Label",   "default": "paires vendues" },
+    { "type": "text", "id": "stat2_num",   "label": "Stat 2 — Chiffre", "default": "4,9/5" },
+    { "type": "text", "id": "stat2_label", "label": "Stat 2 — Label",   "default": "note moyenne" },
+    { "type": "text", "id": "stat3_num",   "label": "Stat 3 — Chiffre", "default": "30j" },
+    { "type": "text", "id": "stat3_label", "label": "Stat 3 — Label",   "default": "retours gratuits" }
+  ],
+  "presets": [{ "name": "Preuve sociale", "category": "Marketing" }]
+}
+{% endschema %}

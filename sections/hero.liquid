@@ -13,43 +13,38 @@
         fetchpriority="high"
       >
     {% else %}
-      <div style="width:100%;height:100%;background:linear-gradient(160deg,var(--navy-d) 0%,var(--navy) 100%);"></div>
+      <div style="width:100%;height:100%;background:#0a0a0a;"></div>
     {% endif %}
   </div>
 
   <div class="hero__veil"></div>
 
   <div class="hero__content">
-    <div class="hero__left reveal">
-      {% if section.settings.tag != blank %}
-        <span class="hero__tag">{{ section.settings.tag }}</span>
-      {% endif %}
-      <h1 class="hero__title">{{ section.settings.title | default: "L'ÉLÉGANCE" | newline_to_br }}</h1>
-      {% if section.settings.cta_url != blank %}
-        <a href="{{ section.settings.cta_url }}" class="btn btn-cream">
-          {{ section.settings.cta | default: 'DÉCOUVRIR' }}
-          <svg width="14" height="8" viewBox="0 0 14 8" fill="none"><path d="M1 4h12M8 1l4 3-4 3" stroke="currentColor" stroke-width=".8"/></svg>
+    <p class="hero__kicker">{{ section.settings.kicker | default: 'Lunettes de soleil' }}</p>
+    <h1 class="hero__title">{{ section.settings.title | default: "L'élégance,\ninstantanément." | newline_to_br }}</h1>
+    <p class="hero__sub">{{ section.settings.sub | default: 'Tu passes de banal à stylé en 3 secondes.' }}</p>
+    <div class="hero__ctas">
+      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-white btn-xl">
+        {{ section.settings.cta | default: 'Voir les modèles' }}
+      </a>
+      {% if section.settings.cta2_url != blank %}
+        <a href="{{ section.settings.cta2_url }}" class="btn btn-outline-white">
+          {{ section.settings.cta2 | default: 'Notre histoire' }}
         </a>
       {% endif %}
     </div>
-    <div class="hero__right reveal reveal-delay-2">
-      {% if section.settings.sub != blank %}
-        <p class="hero__sub">{{ section.settings.sub }}</p>
-      {% endif %}
-      {% if section.settings.cta2_url != blank %}
-        <a href="{{ section.settings.cta2_url }}" class="link-arrow" style="color:rgba(245,243,238,.45);">
-          {{ section.settings.cta2 | default: 'NOTRE HISTOIRE' }}
-        </a>
-      {% endif %}
+    <div class="hero__trust">
+      <span>⭐⭐⭐⭐⭐</span>
+      <span>{{ section.settings.trust | default: '+2 000 paires vendues · Livraison offerte' }}</span>
     </div>
   </div>
 
-  {% if section.settings.show_scroll %}
-    <div class="hero__scroll" aria-hidden="true">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
-    </div>
-  {% endif %}
+  <div class="hero__scroll" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="11" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+      <path d="M12 8v8M9 13l3 3 3-3" stroke="white" stroke-width="1.2"/>
+    </svg>
+  </div>
 
 </section>
 
@@ -57,15 +52,15 @@
 {
   "name": "Hero",
   "settings": [
-    { "type": "image_picker", "id": "image",      "label": "Image plein écran" },
-    { "type": "text",         "id": "tag",         "label": "Tag (ex: Printemps 2026)",   "default": "Printemps — Été 2026" },
-    { "type": "textarea",     "id": "title",       "label": "Titre (une ligne par saut)", "default": "L'ÉLÉGANCE\nA TROUVÉ\nSON REGARD" },
-    { "type": "textarea",     "id": "sub",         "label": "Sous-titre (droite)",        "default": "Des lunettes de soleil conçues pour celles et ceux qui portent leur caractère avec discrétion." },
-    { "type": "url",          "id": "cta_url",     "label": "Lien bouton principal" },
-    { "type": "text",         "id": "cta",         "label": "Texte bouton principal",     "default": "DÉCOUVRIR LA COLLECTION" },
-    { "type": "url",          "id": "cta2_url",    "label": "Lien 2e lien" },
-    { "type": "text",         "id": "cta2",        "label": "Texte 2e lien",              "default": "NOTRE HISTOIRE" },
-    { "type": "checkbox",     "id": "show_scroll", "label": "Indicateur scroll",          "default": true }
+    { "type": "image_picker", "id": "image",    "label": "Image de fond" },
+    { "type": "text",         "id": "kicker",   "label": "Accroche (petite)",     "default": "Lunettes de soleil" },
+    { "type": "textarea",     "id": "title",    "label": "Titre principal",        "default": "L'élégance,\ninstantanément." },
+    { "type": "text",         "id": "sub",      "label": "Sous-titre",             "default": "Tu passes de banal à stylé en 3 secondes." },
+    { "type": "url",          "id": "cta_url",  "label": "Lien bouton principal" },
+    { "type": "text",         "id": "cta",      "label": "Texte bouton principal", "default": "Voir les modèles" },
+    { "type": "url",          "id": "cta2_url", "label": "Lien bouton secondaire" },
+    { "type": "text",         "id": "cta2",     "label": "Texte bouton secondaire","default": "Notre histoire" },
+    { "type": "text",         "id": "trust",    "label": "Ligne de confiance",     "default": "+2 000 paires vendues · Livraison offerte" }
   ],
   "presets": [{ "name": "Hero", "category": "Image" }]
 }

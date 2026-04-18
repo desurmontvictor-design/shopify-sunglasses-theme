@@ -1,5 +1,5 @@
 /* ================================================================
-   CLAIRZAL — v2 JS · Inspiré Celine / Oliver Peoples
+   CLAIRZAL — v3 JS · Conversion-focused
    ================================================================ */
 'use strict';
 
@@ -10,15 +10,15 @@ const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 const fmt = c => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(c/100);
 const esc = s => { const d = document.createElement('div'); d.append(document.createTextNode(s)); return d.innerHTML; };
 
-/* ── Header – apparition au scroll ─────────────────────────── */
+/* ── Header – blur on scroll ─────────────────────────────── */
 const hdr = $('#site-header');
 if (hdr) {
-  const onScroll = () => hdr.classList.toggle('solid', window.scrollY > 20);
+  const onScroll = () => hdr.classList.toggle('solid', window.scrollY > 40);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 }
 
-/* ── Overlay nav ────────────────────────────────────────────── */
+/* ── Overlay nav ─────────────────────────────────────────── */
 const burger  = $('#burger-btn');
 const overlay = $('#overlay-nav');
 const oClose  = $('#overlay-close');
@@ -40,14 +40,14 @@ burger?.addEventListener('click', openNav);
 oClose?.addEventListener('click', closeNav);
 $$('.overlay-nav a').forEach(a => a.addEventListener('click', closeNav));
 
-/* ── Cart drawer ────────────────────────────────────────────── */
+/* ── Cart drawer ─────────────────────────────────────────── */
 const cdrawer = $('#cdrawer');
 const cBody   = $('#cdrawer-body');
 const cFoot   = $('#cdrawer-foot');
 const cSub    = $('#cdrawer-subtotal');
 const cDot    = $('#cart-dot');
 
-const openCart  = () => {
+const openCart = () => {
   cdrawer?.classList.add('open');
   cdrawer?.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
@@ -67,7 +67,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeCart(); closeNav(); }
 });
 
-/* ── Fetch cart ─────────────────────────────────────────────── */
+/* ── Fetch cart ──────────────────────────────────────────── */
 const syncCart = async () => {
   try {
     const cart = await fetch('/cart.js').then(r => r.json());
@@ -76,7 +76,6 @@ const syncCart = async () => {
 };
 
 const renderDrawer = cart => {
-  // badge
   if (cDot) {
     cDot.textContent = cart.item_count;
     cDot.classList.toggle('on', cart.item_count > 0);
@@ -96,10 +95,10 @@ const renderDrawer = cart => {
     <div class="ditem">
       <img class="ditem__img" src="${it.image}" alt="${esc(it.title)}">
       <div>
-        <div class="ditem__name">${esc(it.product_title.toUpperCase())}</div>
+        <div class="ditem__name">${esc(it.product_title)}</div>
         ${it.variant_title !== 'Default Title' ? `<div class="ditem__var">${esc(it.variant_title)}</div>` : ''}
         <div class="ditem__price">${fmt(it.final_line_price)}</div>
-        <button class="ditem__rm" data-key="${it.key}">RETIRER</button>
+        <button class="ditem__rm" data-key="${it.key}">Retirer</button>
       </div>
     </div>
   `).join('');
@@ -109,7 +108,7 @@ const renderDrawer = cart => {
   );
 };
 
-/* ── Add to cart ────────────────────────────────────────────── */
+/* ── Add to cart ─────────────────────────────────────────── */
 const addToCart = async (id, qty = 1) => {
   const r = await fetch('/cart/add.js', {
     method: 'POST',
@@ -130,7 +129,7 @@ const changeCart = async (key, qty) => {
   syncCart();
 };
 
-/* ── Quick add (collection cards) ──────────────────────────── */
+/* ── Quick add (collection cards) ────────────────────────── */
 document.addEventListener('click', async e => {
   const btn = e.target.closest('.pcard__add[data-id]');
   if (!btn) return;
@@ -139,19 +138,22 @@ document.addEventListener('click', async e => {
   btn.textContent = '…';
   try {
     await addToCart(btn.dataset.id);
-    btn.textContent = 'AJOUTÉ ✓';
+    btn.textContent = 'Ajouté ✓';
     setTimeout(() => btn.textContent = orig, 2000);
   } catch {
     btn.textContent = orig;
   }
 });
 
-/* ── Product form ───────────────────────────────────────────── */
+/* ── Product form ────────────────────────────────────────── */
 const pdpForm  = $('#pdp-form');
 const pdpATC   = $('#pdp-atc');
 const pdpBuy   = $('#pdp-buynow');
 const varInput = $('#pdp-variant');
 const pdpPrice = $('#pdp-price');
+const stickyBar  = $('#sticky-bar');
+const stickyATC  = $('#sticky-atc');
+const stickyPrice= $('#sticky-price');
 
 const variantsData = (() => {
   try { return JSON.parse($('#variants-json')?.textContent || 'null'); }
@@ -176,13 +178,18 @@ const applyVariant = v => {
   if (!v) return;
   if (varInput)  varInput.value = v.id;
   if (pdpPrice)  pdpPrice.innerHTML = v.compare_at_price > v.price
-    ? `<s>${fmt(v.compare_at_price)}</s> ${fmt(v.price)}`
+    ? `<s style="opacity:.4;margin-right:.5rem;">${fmt(v.compare_at_price)}</s> ${fmt(v.price)}`
     : fmt(v.price);
   if (pdpATC) {
-    pdpATC.disabled     = !v.available;
-    pdpATC.textContent  = v.available ? 'AJOUTER AU PANIER' : 'ÉPUISÉ';
+    pdpATC.disabled    = !v.available;
+    pdpATC.textContent = v.available ? 'Ajouter au panier' : 'Épuisé';
   }
-  if (pdpBuy)  pdpBuy.href = `/checkout?variant=${v.id}`;
+  if (pdpBuy)      pdpBuy.href = `/checkout?variant=${v.id}`;
+  if (stickyPrice) stickyPrice.textContent = fmt(v.price);
+  if (stickyATC) {
+    stickyATC.disabled    = !v.available;
+    stickyATC.textContent = v.available ? 'Ajouter' : 'Épuisé';
+  }
 };
 
 $$('[data-opt]').forEach(group => {
@@ -202,7 +209,7 @@ pdpForm?.addEventListener('submit', async e => {
   if (pdpATC) { pdpATC.textContent = '…'; pdpATC.disabled = true; }
   try {
     await addToCart(varInput.value);
-    if (pdpATC) pdpATC.textContent = 'AJOUTÉ ✓';
+    if (pdpATC) pdpATC.textContent = 'Ajouté ✓';
     setTimeout(() => { if (pdpATC) { pdpATC.textContent = orig; pdpATC.disabled = false; } }, 2000);
   } catch(err) {
     alert(err.message);
@@ -210,7 +217,32 @@ pdpForm?.addEventListener('submit', async e => {
   }
 });
 
-/* ── Product gallery ────────────────────────────────────────── */
+/* ── Sticky ATC bar ──────────────────────────────────────── */
+if (stickyBar && pdpATC) {
+  const obs = new IntersectionObserver(([entry]) => {
+    stickyBar.classList.toggle('show', !entry.isIntersecting);
+  }, { threshold: 0 });
+  obs.observe(pdpATC);
+
+  stickyATC?.addEventListener('click', () => {
+    if (!varInput?.value) return;
+    const orig = stickyATC.textContent;
+    stickyATC.textContent = '…';
+    stickyATC.disabled = true;
+    addToCart(varInput.value)
+      .then(() => {
+        stickyATC.textContent = 'Ajouté ✓';
+        setTimeout(() => { stickyATC.textContent = orig; stickyATC.disabled = false; }, 2000);
+      })
+      .catch(err => {
+        alert(err.message);
+        stickyATC.textContent = orig;
+        stickyATC.disabled = false;
+      });
+  });
+}
+
+/* ── Product gallery ─────────────────────────────────────── */
 const mainImg = $('#pdp-img');
 $$('.pdp__thumb').forEach(t => {
   const activate = () => {
@@ -222,7 +254,7 @@ $$('.pdp__thumb').forEach(t => {
   t.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') activate(); });
 });
 
-/* ── Cart page qty ──────────────────────────────────────────── */
+/* ── Cart page qty ───────────────────────────────────────── */
 $$('.qty-m, .qty-p').forEach(btn => {
   btn.addEventListener('click', async () => {
     const key   = btn.dataset.key;
@@ -243,17 +275,17 @@ $$('.cart-item__rm').forEach(btn =>
   })
 );
 
-/* ── Accordion ──────────────────────────────────────────────── */
+/* ── Accordion ───────────────────────────────────────────── */
 $$('.acc__hd').forEach(hd => {
   hd.addEventListener('click', () => {
-    const item   = hd.closest('.acc__item');
+    const item    = hd.closest('.acc__item');
     const wasOpen = item.classList.contains('open');
     $$('.acc__item').forEach(i => i.classList.remove('open'));
     if (!wasOpen) item.classList.add('open');
   });
 });
 
-/* ── Reveal on scroll ───────────────────────────────────────── */
+/* ── Reveal on scroll ────────────────────────────────────── */
 const revEls = $$('.reveal');
 if ('IntersectionObserver' in window && revEls.length) {
   const obs = new IntersectionObserver(entries => {
@@ -264,7 +296,7 @@ if ('IntersectionObserver' in window && revEls.length) {
   revEls.forEach(el => obs.observe(el));
 }
 
-/* ── Filter pills (collection, purely visual) ───────────────── */
+/* ── Filter pills (collection) ───────────────────────────── */
 $$('.coll-pill').forEach(pill => {
   pill.addEventListener('click', () => {
     $$('.coll-pill').forEach(p => p.classList.remove('on'));
@@ -272,7 +304,7 @@ $$('.coll-pill').forEach(pill => {
   });
 });
 
-/* ── Init ───────────────────────────────────────────────────── */
+/* ── Init ────────────────────────────────────────────────── */
 syncCart();
 
 })();

@@ -1,0 +1,29 @@
+<section class="final-cta reveal">
+  <div class="final-cta__inner">
+    <p class="final-cta__kicker">{{ section.settings.kicker | default: 'Prêt à changer de look ?' }}</p>
+    <h2 class="final-cta__title">{{ section.settings.title | default: 'Choisir ma paire.' }}</h2>
+    <p class="final-cta__sub">{{ section.settings.sub | default: 'Livraison offerte · Retours 30j gratuits · Paiement sécurisé' }}</p>
+    <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-black btn-xl">
+      {{ section.settings.cta | default: 'Voir la collection' }}
+    </a>
+    <div class="final-cta__trust">
+      <span>🔒 Paiement 100% sécurisé</span>
+      <span>📦 Livraison offerte</span>
+      <span>↩️ Retours 30 jours</span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTA Final",
+  "settings": [
+    { "type": "text", "id": "kicker",  "label": "Accroche",    "default": "Prêt à changer de look ?" },
+    { "type": "text", "id": "title",   "label": "Titre",       "default": "Choisir ma paire." },
+    { "type": "text", "id": "sub",     "label": "Sous-titre",  "default": "Livraison offerte · Retours 30j gratuits · Paiement sécurisé" },
+    { "type": "url",  "id": "cta_url", "label": "Lien bouton" },
+    { "type": "text", "id": "cta",     "label": "Texte CTA",   "default": "Voir la collection" }
+  ],
+  "presets": [{ "name": "CTA Final", "category": "Marketing" }]
+}
+{% endschema %}

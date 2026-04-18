@@ -3,80 +3,71 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "eyebrow": "PRINTEMPS — ÉTÉ 2026",
-        "title": "L'ÉLÉGANCE A TROUVÉ SON REGARD",
-        "subtitle": "Des lunettes de soleil conçues pour celles et ceux qui portent leur caractère avec discrétion.",
-        "cta_label": "DÉCOUVRIR LA COLLECTION",
-        "cta_url": "/collections/all"
+        "kicker": "Lunettes de soleil",
+        "title": "L'élégance,\ninstantanément.",
+        "sub": "Tu passes de banal à stylé en 3 secondes.",
+        "cta": "Voir les modèles",
+        "trust": "+2 000 paires vendues · Livraison offerte"
       }
     },
-    "marquee": {
-      "type": "marquee",
+    "impact": {
+      "type": "impact-gallery",
       "settings": {
-        "text": "NOUVELLE COLLECTION — LIVRAISON OFFERTE — SÉRIE LIMITÉE — CLAIRZAL.COM — L'ÉLÉGANCE A TROUVÉ SON REGARD"
+        "title": "Un détail qui change tout.",
+        "sub": "Fabriquées pour ceux qui savent que le style, ça se voit de loin.",
+        "caption_1": "Monture acétate italien",
+        "caption_2": "Verres polarisés UV400",
+        "caption_3": "Fabriquées en Italie"
       }
     },
-    "featured_collection": {
+    "products": {
       "type": "featured-collection",
       "settings": {
-        "eyebrow": "Nos créations",
-        "title": "LA COLLECTION"
+        "title": "Nos modèles",
+        "sub": "Chaque paire pensée pour durer, conçue pour impressionner.",
+        "limit": 6
       }
     },
-    "statement": {
-      "type": "statement",
+    "offer": {
+      "type": "offer-band",
       "settings": {
-        "title": "L'ÉLÉGANCE A TROUVÉ SON REGARD",
-        "subtitle": "Chaque paire raconte une histoire. La vôtre commence ici.",
-        "watermark": "CLAIRZAL"
+        "title": "2 paires achetées = 1 offerte",
+        "sub": "Automatiquement appliqué au panier. Pas de code promo nécessaire.",
+        "cta": "J'en profite",
+        "note": "Offre valable sur toute la collection · Stocks limités"
       }
     },
-    "story": {
-      "type": "story",
+    "proof": {
+      "type": "social-proof",
       "settings": {
-        "eyebrow": "NOTRE HISTOIRE",
-        "title": "NÉES POUR ÊTRE PORTÉES",
-        "text": "Clairzal est née d'une obsession : créer des lunettes qui disparaissent au visage pour ne laisser voir que vous. Des matières nobles, des silhouettes épurées, une écriture intemporelle.",
-        "link_label": "DÉCOUVRIR L'HISTOIRE",
-        "link_url": "/pages/notre-histoire"
+        "title": "Ils ont craqué.",
+        "sub": "+2 000 clients · Note moyenne 4,9/5",
+        "r1_name": "Thomas M.", "r1_text": "Je les mets tous les jours depuis 3 semaines. Qualité top, livraison rapide.", "r1_loc": "Paris",
+        "r2_name": "Karim B.", "r2_text": "La paire Riviera est parfaite. On me demande souvent où je les ai achetées.", "r2_loc": "Lyon",
+        "r3_name": "Lucas D.", "r3_text": "Rapport qualité-prix imbattable. On dirait des lunettes à 200€ pour 50€.", "r3_loc": "Bordeaux",
+        "stat1_num": "2 000+", "stat1_label": "paires vendues",
+        "stat2_num": "4,9/5", "stat2_label": "note moyenne",
+        "stat3_num": "30j", "stat3_label": "retours gratuits"
       }
     },
-    "reassurance": {
-      "type": "reassurance",
-      "blocks": {
-        "b1": {
-          "type": "item",
-          "settings": {
-            "title": "LIVRAISON OFFERTE",
-            "text": "En France métropolitaine, sans minimum d'achat."
-          }
-        },
-        "b2": {
-          "type": "item",
-          "settings": {
-            "title": "SÉRIE LIMITÉE",
-            "text": "Chaque modèle est édité en quantités restreintes."
-          }
-        },
-        "b3": {
-          "type": "item",
-          "settings": {
-            "title": "RETOURS 30 JOURS",
-            "text": "Pas convaincu·e ? On reprend, sans question."
-          }
-        }
-      },
-      "block_order": ["b1", "b2", "b3"]
-    },
-    "newsletter": {
-      "type": "newsletter",
+    "lifestyle": {
+      "type": "lifestyle",
       "settings": {
-        "eyebrow": "Le cercle Clairzal",
-        "title": "ACCÈS PRIVÉ",
-        "subtitle": "Nouvelles collections, séries limitées, avant-premières. Réservé à nos abonnés.",
-        "btn_label": "S'INSCRIRE"
+        "kicker": "Le style, ça se ressent",
+        "title": "Pas besoin d'en faire plus.",
+        "body": "Une bonne paire de lunettes fait le travail à ta place. Soleil ou pas, tu imposes.",
+        "cta": "Trouver ma paire"
+      }
+    },
+    "final_cta": {
+      "type": "final-cta",
+      "settings": {
+        "kicker": "Prêt à changer de look ?",
+        "title": "Choisir ma paire.",
+        "sub": "Livraison offerte · Retours 30j gratuits · Paiement sécurisé",
+        "cta": "Voir la collection"
       }
     }
   },
-  "order": ["hero", "marquee", "featured_collection", "statement", "story", "reassurance", "newsletter"]
+  "order": ["hero", "impact", "products", "offer", "proof", "lifestyle", "final_cta"]
 }

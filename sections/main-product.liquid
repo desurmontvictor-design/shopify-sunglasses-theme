@@ -27,17 +27,31 @@
   <!-- Infos -->
   <div class="pdp__info">
 
-    <div class="pdp__num">N°{{ product.id | modulo: 99 | plus: 1 | prepend: '0' | slice: -2, 2 }}</div>
-    <h1 class="pdp__name">{{ product.title | upcase }}</h1>
-
-    <div class="pdp__price" id="pdp-price">
-      {% if cv.compare_at_price > cv.price %}<s>{{ cv.compare_at_price | money }}</s>{% endif %}
-      {{ cv.price | money }}
+    <!-- Évaluations -->
+    <div class="pdp__rating">
+      <span style="color:#f59e0b;letter-spacing:.1em;">★★★★★</span>
+      <span style="font-size:.85rem;color:var(--gray);">4,9 · {{ section.settings.review_count | default: '127 avis' }}</span>
     </div>
 
-    {% if product.description != blank %}
-      <p class="pdp__desc">{{ product.description | strip_html | truncate: 220 }}</p>
-    {% endif %}
+    <h1 class="pdp__name">{{ product.title }}</h1>
+
+    <div class="pdp__price" id="pdp-price">
+      {% if cv.compare_at_price > cv.price %}
+        <s style="opacity:.4;margin-right:.5rem;">{{ cv.compare_at_price | money }}</s>
+      {% endif %}
+      {{ cv.price | money }}
+      {% if cv.compare_at_price > cv.price %}
+        <span class="pdp__badge-sale">-{{ cv.compare_at_price | minus: cv.price | times: 100 | divided_by: cv.compare_at_price }}%</span>
+      {% endif %}
+    </div>
+
+    <!-- Bénéfices (before specs) -->
+    <ul class="pdp__benefits">
+      <li>✓ {{ section.settings.benefit_1 | default: 'Style immédiat — tu passes de banal à stylé' }}</li>
+      <li>✓ {{ section.settings.benefit_2 | default: 'Verres polarisés UV400 — protection maximale' }}</li>
+      <li>✓ {{ section.settings.benefit_3 | default: 'Monture légère — confort toute la journée' }}</li>
+      <li>✓ {{ section.settings.benefit_4 | default: 'Étui rigide + chiffon microfibre inclus' }}</li>
+    </ul>
 
     <hr class="pdp__divider">
 
@@ -47,7 +61,7 @@
       {% unless product.has_only_default_variant %}
         {% for opt in product.options_with_values %}
           <div style="margin-bottom:1.5rem;">
-            <span class="pdp__label">{{ opt.name | upcase }}</span>
+            <span class="pdp__label">{{ opt.name }}</span>
             {% if opt.name == 'Couleur' or opt.name == 'Color' %}
               <div class="swatches" data-opt="{{ forloop.index0 }}">
                 {% for v in opt.values %}
@@ -68,36 +82,42 @@
         {% endfor %}
       {% endunless %}
 
-      <hr class="pdp__divider">
-
       <div class="pdp__ctas">
-        <button type="submit" class="btn btn-navy btn-full" id="pdp-atc" {% unless cv.available %}disabled{% endunless %}>
-          {% if cv.available %}AJOUTER AU PANIER{% else %}ÉPUISÉ{% endif %}
+        <button type="submit" class="btn btn-black btn-full btn-xl" id="pdp-atc" {% unless cv.available %}disabled{% endunless %}>
+          {% if cv.available %}Ajouter au panier{% else %}Épuisé{% endif %}
         </button>
         {% if section.settings.show_buy_now %}
-          <a href="/checkout?variant={{ cv.id }}" class="btn btn-line btn-full" id="pdp-buynow">
-            ACHETER MAINTENANT
+          <a href="/checkout?variant={{ cv.id }}" class="btn btn-outline btn-full" id="pdp-buynow" style="margin-top:.75rem;">
+            Acheter maintenant
           </a>
         {% endif %}
       </div>
+
     </form>
+
+    <!-- Réassurance rapide -->
+    <div class="pdp__reassurance">
+      <span>🚚 Livraison offerte</span>
+      <span>↩️ Retours 30j</span>
+      <span>🔒 Paiement sécurisé</span>
+    </div>
 
     <!-- Accordion -->
     <div class="acc">
       {% if product.description != blank %}
         <div class="acc__item">
-          <button class="acc__hd" type="button">DESCRIPTION <span class="acc__ico"></span></button>
+          <button class="acc__hd" type="button">Description <span class="acc__ico"></span></button>
           <div class="acc__bd"><div class="acc__content">{{ product.description }}</div></div>
         </div>
       {% endif %}
       <div class="acc__item">
-        <button class="acc__hd" type="button">CARACTÉRISTIQUES <span class="acc__ico"></span></button>
+        <button class="acc__hd" type="button">Caractéristiques <span class="acc__ico"></span></button>
         <div class="acc__bd">
           <div class="acc__content">{{ section.settings.specs | default: 'Monture acétate · Verres polarisés UV400 · Catégorie 3 · Fabriqué en Italie · Étui rigide + chiffon microfibre inclus' }}</div>
         </div>
       </div>
       <div class="acc__item">
-        <button class="acc__hd" type="button">LIVRAISON & RETOURS <span class="acc__ico"></span></button>
+        <button class="acc__hd" type="button">Livraison & retours <span class="acc__ico"></span></button>
         <div class="acc__bd">
           <div class="acc__content">{{ section.settings.delivery | default: 'Livraison offerte en France métropolitaine. Expédition sous 24–48h (jours ouvrés). Retours gratuits sous 30 jours.' }}</div>
         </div>
@@ -107,15 +127,31 @@
   </div>
 </div>
 
+<!-- Sticky ATC bar (mobile) -->
+<div class="sticky-bar" id="sticky-bar">
+  <div class="sticky-bar__info">
+    <span class="sticky-bar__name">{{ product.title }}</span>
+    <span class="sticky-bar__price" id="sticky-price">{{ cv.price | money }}</span>
+  </div>
+  <button class="btn btn-black" id="sticky-atc" {% unless cv.available %}disabled{% endunless %}>
+    {% if cv.available %}Ajouter{% else %}Épuisé{% endif %}
+  </button>
+</div>
+
 <script type="application/json" id="variants-json">{{ product.variants | json }}</script>
 
 {% schema %}
 {
   "name": "Product Main",
   "settings": [
-    { "type": "checkbox",  "id": "show_buy_now", "label": "Bouton acheter maintenant", "default": true },
-    { "type": "textarea",  "id": "specs",        "label": "Caractéristiques" },
-    { "type": "textarea",  "id": "delivery",     "label": "Livraison & retours" }
+    { "type": "checkbox",  "id": "show_buy_now",  "label": "Bouton acheter maintenant", "default": true },
+    { "type": "text",      "id": "review_count",  "label": "Nombre d'avis",             "default": "127 avis" },
+    { "type": "text",      "id": "benefit_1",     "label": "Bénéfice 1",                "default": "Style immédiat — tu passes de banal à stylé" },
+    { "type": "text",      "id": "benefit_2",     "label": "Bénéfice 2",                "default": "Verres polarisés UV400 — protection maximale" },
+    { "type": "text",      "id": "benefit_3",     "label": "Bénéfice 3",                "default": "Monture légère — confort toute la journée" },
+    { "type": "text",      "id": "benefit_4",     "label": "Bénéfice 4",                "default": "Étui rigide + chiffon microfibre inclus" },
+    { "type": "textarea",  "id": "specs",         "label": "Caractéristiques" },
+    { "type": "textarea",  "id": "delivery",      "label": "Livraison & retours" }
   ]
 }
 {% endschema %}

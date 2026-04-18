@@ -1,0 +1,27 @@
+<section class="offer-band reveal">
+  <div class="offer-band__inner">
+    <div class="offer-band__badge">OFFRE EXCLUSIVE</div>
+    <h2 class="offer-band__title">{{ section.settings.title | default: '2 paires achetées = 1 offerte' }}</h2>
+    <p class="offer-band__sub">{{ section.settings.sub | default: 'Automatiquement appliqué au panier. Pas de code promo nécessaire.' }}</p>
+    <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-white btn-xl">
+      {{ section.settings.cta | default: "J'en profite" }}
+    </a>
+    {% if section.settings.note != blank %}
+      <p class="offer-band__note">{{ section.settings.note }}</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Offre 2+1",
+  "settings": [
+    { "type": "text", "id": "title",   "label": "Titre",       "default": "2 paires achetées = 1 offerte" },
+    { "type": "text", "id": "sub",     "label": "Sous-titre",  "default": "Automatiquement appliqué au panier. Pas de code promo nécessaire." },
+    { "type": "url",  "id": "cta_url", "label": "Lien bouton" },
+    { "type": "text", "id": "cta",     "label": "Texte CTA",   "default": "J'en profite" },
+    { "type": "text", "id": "note",    "label": "Note (petite)","default": "Offre valable sur toute la collection · Stocks limités" }
+  ],
+  "presets": [{ "name": "Offre 2+1", "category": "Promotionnel" }]
+}
+{% endschema %}

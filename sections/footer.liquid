@@ -3,8 +3,8 @@
     <div class="footer-grid">
 
       <div>
-        <a href="/" class="footer-logo">{{ section.settings.logo | default: shop.name | upcase }}</a>
-        <p class="footer-tagline">{{ section.settings.tagline | default: "L'élégance a trouvé son regard." }}</p>
+        <a href="/" class="footer-logo">{{ section.settings.logo | default: shop.name }}</a>
+        <p class="footer-tagline">{{ section.settings.tagline | default: "L'élégance, instantanément." }}</p>
         <div class="footer-social">
           {% if section.settings.instagram != blank %}
             <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
@@ -21,7 +21,7 @@
       </div>
 
       <div class="footer-col">
-        <span class="footer-col-title">BOUTIQUE</span>
+        <span class="footer-col-title">Boutique</span>
         <ul>
           <li><a href="/collections/all">Toutes les lunettes</a></li>
           <li><a href="/collections/nouveautes">Nouveautés</a></li>

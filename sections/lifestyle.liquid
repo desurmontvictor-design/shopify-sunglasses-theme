@@ -1,0 +1,46 @@
+<section class="lifestyle reveal">
+  <div class="lifestyle__grid">
+
+    <div class="lifestyle__text">
+      <p class="lifestyle__kicker">{{ section.settings.kicker | default: 'Le style, ça se ressent' }}</p>
+      <h2 class="t-h2">{{ section.settings.title | default: 'Pas besoin d'en faire plus.' }}</h2>
+      <p class="t-body" style="color:var(--gray);margin-top:1rem;">{{ section.settings.body | default: 'Une bonne paire de lunettes fait le travail à ta place. Soleil ou pas, tu impostes.' }}</p>
+      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="btn btn-black" style="margin-top:2rem;">
+        {{ section.settings.cta | default: 'Trouver ma paire' }}
+      </a>
+    </div>
+
+    <div class="lifestyle__images">
+      {% for i in (1..2) %}
+        {% assign img_id = 'image_' | append: i %}
+        {% if section.settings[img_id] != blank %}
+          <img
+            src="{{ section.settings[img_id] | img_url: '700x' }}"
+            alt="{{ shop.name }}"
+            loading="lazy"
+            class="lifestyle__img lifestyle__img--{{ i }}"
+          >
+        {% else %}
+          <div class="lifestyle__img lifestyle__img--{{ i }}" style="background:var(--light);"></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lifestyle",
+  "settings": [
+    { "type": "text",         "id": "kicker",  "label": "Accroche",    "default": "Le style, ça se ressent" },
+    { "type": "text",         "id": "title",   "label": "Titre",       "default": "Pas besoin d'en faire plus." },
+    { "type": "textarea",     "id": "body",    "label": "Corps",       "default": "Une bonne paire de lunettes fait le travail à ta place. Soleil ou pas, tu imposes." },
+    { "type": "url",          "id": "cta_url", "label": "Lien CTA" },
+    { "type": "text",         "id": "cta",     "label": "Texte CTA",   "default": "Trouver ma paire" },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1 (grande)" },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2 (petite)" }
+  ],
+  "presets": [{ "name": "Lifestyle", "category": "Image" }]
+}
+{% endschema %}

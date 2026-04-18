@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#001532">
+  <meta name="theme-color" content="#0a0a0a">
   <title>
     {{ page_title }}
     {%- unless page_title contains shop.name %} — {{ shop.name }}{% endunless -%}
@@ -14,16 +14,9 @@
   <link rel="canonical" href="{{ canonical_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   {{ content_for_header }}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
-  <style>
-    :root {
-      --navy:  {{ settings.color_primary  | default: '#001532' }};
-      --cream: {{ settings.color_bg       | default: '#f5f3ee' }};
-      --warm:  {{ settings.color_secondary| default: '#eceae4' }};
-    }
-  </style>
 </head>
 <body class="t-{{ template.name }}">
 
@@ -39,11 +32,11 @@
     <div class="cdrawer__veil" id="cdrawer-veil"></div>
     <div class="cdrawer__panel" role="dialog" aria-label="Panier">
       <div class="cdrawer__hd">
-        <span class="cdrawer__title">VOTRE PANIER</span>
+        <span class="cdrawer__title">PANIER</span>
         <button class="cdrawer__close" id="cdrawer-close" aria-label="Fermer">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <line x1="1" y1="1" x2="15" y2="15" stroke="currentColor" stroke-width="1"/>
-            <line x1="15" y1="1" x2="1" y2="15" stroke="currentColor" stroke-width="1"/>
+            <line x1="1" y1="1" x2="15" y2="15" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="15" y1="1" x2="1" y2="15" stroke="currentColor" stroke-width="1.5"/>
           </svg>
         </button>
       </div>
@@ -52,12 +45,12 @@
       </div>
       <div class="cdrawer__foot" id="cdrawer-foot" style="display:none">
         <div class="cdrawer__sub">
-          <span>SOUS-TOTAL</span>
+          <span>Sous-total</span>
           <span id="cdrawer-subtotal"></span>
         </div>
-        <p class="cdrawer__ship">Livraison offerte en France</p>
-        <a href="/checkout" class="btn btn-navy btn-full">COMMANDER</a>
-        <a href="/cart" class="btn btn-line btn-full">VOIR LE PANIER</a>
+        <p class="cdrawer__ship">🚚 Livraison offerte en France</p>
+        <a href="/checkout" class="btn btn-black btn-full">Commander</a>
+        <a href="/cart" class="btn btn-outline btn-full" style="margin-top:.5rem;">Voir le panier</a>
       </div>
     </div>
   </div>

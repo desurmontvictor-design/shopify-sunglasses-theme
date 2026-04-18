@@ -6,35 +6,30 @@
         {% assign menu = linklists[section.settings.menu] %}
         {% if menu %}
           {% for link in menu.links %}
-            <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+            <a href="{{ link.url }}">{{ link.title }}</a>
           {% endfor %}
         {% else %}
-          <a href="/collections/all">BOUTIQUE</a>
-          <a href="/collections/nouveautes">NOUVEAUTÉS</a>
-          <a href="/pages/notre-histoire">HISTOIRE</a>
+          <a href="/collections/all">Boutique</a>
+          <a href="/pages/notre-histoire">Histoire</a>
         {% endif %}
       </nav>
 
       <a href="/" class="site-logo" aria-label="{{ shop.name }}">
-        {{ section.settings.logo | default: shop.name | upcase }}
+        {{ section.settings.logo | default: shop.name }}
       </a>
 
       <div class="header-actions">
-        <button class="hbtn" id="search-btn" aria-label="Rechercher">
-          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1">
-            <circle cx="7" cy="7" r="5.5"/><line x1="11.5" y1="11.5" x2="16" y2="16"/>
-          </svg>
-        </button>
         <a href="/account" class="hbtn" aria-label="Compte">
-          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1">
-            <circle cx="8.5" cy="5" r="3.5"/>
-            <path d="M1 16.5c0-3.5 3.4-6 7.5-6s7.5 2.5 7.5 6"/>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="9" cy="5.5" r="3.5"/>
+            <path d="M1.5 17c0-4 3.4-6.5 7.5-6.5s7.5 2.5 7.5 6.5"/>
           </svg>
         </a>
         <button class="hbtn" id="cart-btn" aria-label="Panier">
-          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1">
-            <path d="M1 1h2l2 8h8.5l1.5-5H5"/><circle cx="7.5" cy="14.5" r="1.5" fill="currentColor" stroke="none"/>
-            <circle cx="12.5" cy="14.5" r="1.5" fill="currentColor" stroke="none"/>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M1 1h2.5l2.2 9h8.6l1.7-5.5H5.5"/>
+            <circle cx="8" cy="15.5" r="1.5" fill="currentColor" stroke="none"/>
+            <circle cx="13" cy="15.5" r="1.5" fill="currentColor" stroke="none"/>
           </svg>
           <span class="cart-dot" id="cart-dot">{{ cart.item_count }}</span>
         </button>
@@ -50,20 +45,19 @@
 <!-- Fullscreen overlay nav -->
 <nav class="overlay-nav" id="overlay-nav" aria-hidden="true">
   <button class="overlay-close hbtn" id="overlay-close" aria-label="Fermer">
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <line x1="2" y1="2" x2="20" y2="20" stroke="currentColor" stroke-width="1"/>
-      <line x1="20" y1="2" x2="2" y2="20" stroke="currentColor" stroke-width="1"/>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="21" y1="3" x2="3" y2="21" stroke="currentColor" stroke-width="1.5"/>
     </svg>
   </button>
   {% if menu %}
     {% for link in menu.links %}
-      <a href="{{ link.url }}">{{ link.title | upcase }}</a>
+      <a href="{{ link.url }}">{{ link.title }}</a>
     {% endfor %}
   {% else %}
-    <a href="/collections/all">BOUTIQUE</a>
-    <a href="/collections/nouveautes">NOUVEAUTÉS</a>
-    <a href="/pages/notre-histoire">HISTOIRE</a>
-    <a href="/pages/contact">CONTACT</a>
+    <a href="/collections/all">Boutique</a>
+    <a href="/pages/notre-histoire">Histoire</a>
+    <a href="/pages/contact">Contact</a>
   {% endif %}
 </nav>
 

@@ -1,100 +1,65 @@
 {% assign col = collections[section.settings.collection] %}
 
-<section style="padding: clamp(5rem,10vw,10rem) 0;">
+<section class="products-section" id="products">
   <div class="wrap">
 
-    <div class="s-head reveal">
-      <div>
-        {% if section.settings.eyebrow != blank %}
-          <span class="s-eyebrow">{{ section.settings.eyebrow }}</span>
-        {% endif %}
-        <h2 class="t-disp t-lg">{{ section.settings.title | default: 'LA COLLECTION' }}</h2>
-      </div>
-      {% if col != blank %}
-        <a href="{{ col.url }}" class="link-arrow">TOUT VOIR</a>
-      {% endif %}
+    <div class="products-section__hd reveal">
+      <h2 class="t-h2">{{ section.settings.title | default: 'Nos modèles' }}</h2>
+      <p class="t-body" style="color:var(--gray);margin-top:.5rem;">{{ section.settings.sub | default: 'Chaque paire pensée pour durer, conçue pour impressionner.' }}</p>
     </div>
 
-    <!-- Editorial grid : 1 grande + 3 petites -->
-    <div class="ed-grid">
-
-      <!-- Grande carte -->
-      {% assign big = col.products | first %}
-      {% if big %}
-        <a href="{{ big.url }}" class="pcard pcard--big reveal">
+    <div class="pcards-grid">
+      {% for product in col.products limit: section.settings.limit %}
+        <a href="{{ product.url }}" class="pcard reveal">
           <div class="pcard__fig">
-            {% if big.featured_image %}
+            {% if product.featured_image %}
               <img class="pcard__img"
-                src="{{ big.featured_image | img_url: '900x' }}"
-                srcset="{{ big.featured_image | img_url: '600x' }} 600w, {{ big.featured_image | img_url: '900x' }} 900w"
-                sizes="(max-width:768px) 100vw, 55vw"
-                alt="{{ big.title | escape }}" loading="lazy">
+                src="{{ product.featured_image | img_url: '600x' }}"
+                srcset="{{ product.featured_image | img_url: '400x' }} 400w, {{ product.featured_image | img_url: '600x' }} 600w"
+                sizes="(max-width:768px) 50vw, 33vw"
+                alt="{{ product.title | escape }}" loading="lazy">
+            {% else %}
+              <div style="width:100%;height:100%;background:var(--light);"></div>
             {% endif %}
-            {% if big.tags contains 'bestseller' %}
-              <span class="pcard__badge">BESTSELLER</span>
-            {% elsif big.tags contains 'nouveau' %}
-              <span class="pcard__badge">NOUVEAU</span>
-            {% endif %}
+            {% if product.tags contains 'bestseller' %}<span class="pcard__badge">Bestseller</span>{% endif %}
+            {% if product.tags contains 'nouveau' %}<span class="pcard__badge">Nouveau</span>{% endif %}
             <div class="pcard__over">
-              <span class="pcard__add" data-id="{{ big.variants.first.id }}">AJOUTER AU PANIER</span>
+              <span class="pcard__add" data-id="{{ product.variants.first.id }}">Ajouter au panier</span>
             </div>
           </div>
           <div class="pcard__meta">
-            <span class="pcard__name">{{ big.title | upcase }}</span>
-            <span class="pcard__price">{{ big.price | money }}</span>
+            <span class="pcard__name">{{ product.title }}</span>
+            <span class="pcard__price">
+              {% if product.compare_at_price > product.price %}
+                <s style="opacity:.4;margin-right:.3rem;">{{ product.compare_at_price | money }}</s>
+              {% endif %}
+              {{ product.price | money }}
+            </span>
           </div>
         </a>
       {% else %}
-        <div class="pcard pcard--big" style="background:var(--warm);">
-          <div class="pcard__fig" style="display:flex;align-items:center;justify-content:center;">
-            <span style="font-family:var(--f-body);font-style:italic;font-size:.85rem;color:var(--muted);">Sélectionnez une collection</span>
-          </div>
-        </div>
-      {% endif %}
-
-      <!-- 3 petites cartes -->
-      <div class="ed-grid__small">
-        {% for product in col.products offset: 1 limit: 3 %}
-          <a href="{{ product.url }}" class="pcard pcard--small reveal reveal-delay-{{ forloop.index }}">
-            <div class="pcard__fig">
-              {% if product.featured_image %}
-                <img class="pcard__img"
-                  src="{{ product.featured_image | img_url: '500x' }}"
-                  alt="{{ product.title | escape }}" loading="lazy">
-              {% endif %}
-              {% if product.tags contains 'bestseller' %}
-                <span class="pcard__badge">BESTSELLER</span>
-              {% elsif product.tags contains 'nouveau' %}
-                <span class="pcard__badge">NOUVEAU</span>
-              {% endif %}
-              <div class="pcard__over">
-                <span class="pcard__add" data-id="{{ product.variants.first.id }}">AJOUTER</span>
-              </div>
-            </div>
-            <div class="pcard__meta">
-              <span class="pcard__name">{{ product.title | upcase }}</span>
-              <span class="pcard__price">{{ product.price | money }}</span>
-            </div>
-          </a>
-        {% else %}
-          {% for i in (1..3) %}
-            <div class="pcard pcard--small" style="background:var(--warm);"></div>
-          {% endfor %}
-        {% endfor %}
-      </div>
-
+        <p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:4rem 0;">Sélectionnez une collection dans les paramètres.</p>
+      {% endfor %}
     </div>
+
+    {% if col != blank %}
+      <div style="text-align:center;margin-top:3rem;">
+        <a href="{{ col.url }}" class="btn btn-outline">Voir toute la collection</a>
+      </div>
+    {% endif %}
+
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Featured Collection",
+  "name": "Produits phares",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection"          },
-    { "type": "text",       "id": "eyebrow",    "label": "Accroche",  "default": "Nos créations" },
-    { "type": "text",       "id": "title",      "label": "Titre",     "default": "LA COLLECTION"  }
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text",       "id": "title",      "label": "Titre",            "default": "Nos modèles" },
+    { "type": "text",       "id": "sub",        "label": "Sous-titre",       "default": "Chaque paire pensée pour durer, conçue pour impressionner." },
+    { "type": "range",      "id": "limit",      "label": "Nb de produits",   "min": 3, "max": 6, "step": 3, "default": 6 }
   ],
-  "presets": [{ "name": "Featured Collection", "category": "Collection" }]
+  "presets": [{ "name": "Produits phares", "category": "Collection" }]
 }
 {% endschema %}
